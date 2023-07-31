@@ -13,6 +13,7 @@ import { ProfileScreen } from './components/profile/ProfileScreen';
 import { NotificationScreen } from './components/notification/NotificationScreen';
 import { AbonnementScreen } from './components/abonnement/AbonnementScreen';
 import { WaitingScreen } from './components/waiting/WaitingScreen';
+import { Activity } from './components/activity/Activity';
 
 const Tab = createMaterialBottomTabNavigator();
 const Stack = createNativeStackNavigator();
@@ -78,6 +79,20 @@ const HomeStack = () => {
   )
 }
 
+const ActivityStack = () => {
+  return (
+    <Stack.Navigator>
+      <Stack.Screen
+        name="activity"
+        component={Activity}
+        options={{
+          title: 'Activités'
+        }}
+      />
+    </Stack.Navigator>
+  )
+}
+
 
 export default function App() {
   return (
@@ -98,7 +113,7 @@ export default function App() {
                 />
                 <Tab.Screen
                   name="Activity"
-                  component={HomeScreen}
+                  component={ActivityStack}
                   options={{
                     tabBarIcon: ({color, size}) => <FontAwesome5 name='store' color={color} size={23} />
                   }}
