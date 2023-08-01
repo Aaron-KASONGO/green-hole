@@ -4,18 +4,19 @@ import { Card, IconButton, Text } from 'react-native-paper'
 
 const {width, height} = Dimensions.get("screen");
 
-export const CardCollecter = () => {
+export const CardCollecter = ({navigation}) => {
   return (
     <View
       style={{
         marginLeft: 10,
+        marginBottom: 3
       }}
     >
       <Card
         style={{
           width: width * 0.45,
         }}
-        onPress={() => navigation.navigate('waitinglist')}
+        onPress={() => navigation.navigate('profileCollecteur')}
       >
         <Card.Cover
           style={{

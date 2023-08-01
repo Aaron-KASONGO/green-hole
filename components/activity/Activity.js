@@ -36,10 +36,10 @@ const CardCarousel = () => {
     )
 }
 
-export const Activity = () => {
+export const Activity = ({navigation}) => {
   const [search, setSearch] = useState(null);
   return (
-    <>
+    <ScrollView>
       <View
         style={{
           display: 'flex',
@@ -62,30 +62,43 @@ export const Activity = () => {
           <FontAwesome5 name='search' size={20} />
           <Text>   Search</Text>
         </Button>
-        <ScrollView>
-          <FlatList
-              scrollEnabled={true}
-              data={DATA}
-              renderItem={({item}) => <CardCarousel />}
-              keyExtractor={item => item.id}
-              horizontal
-            />
-        </ScrollView>
+        <FlatList
+            scrollEnabled={true}
+            data={DATA}
+            renderItem={({item}) => <CardCarousel />}
+            keyExtractor={item => item.id}
+            horizontal
+          />
       </View>
           
       <Text variant='titleMedium' style={{ fontWeight: 'bold', marginVertical: 5, paddingHorizontal: 10}}>Collecteurs</Text>
       <FlatList
         style={{
-          paddingHorizontal: 10
+          paddingHorizontal: 10,
+          paddingVertical: 10
         }}
         scrollEnabled={true}
         data={DATA}
-        renderItem={({item}) => <CardCollecter />}
+        renderItem={({item}) => <CardCollecter navigation={navigation} />}
         keyExtractor={item => item.id}
         horizontal
+        showsHorizontalScrollIndicator={false}
       />
-      
-    </>
+
+      <Text variant='titleMedium' style={{ fontWeight: 'bold', marginVertical: 5, paddingHorizontal: 10}}>Entreprises de Transformation</Text>
+      <FlatList
+        style={{
+          paddingHorizontal: 10,
+          paddingVertical: 10
+        }}
+        scrollEnabled={true}
+        data={DATA}
+        renderItem={({item}) => <CardCollecter navigation={navigation} />}
+        keyExtractor={item => item.id}
+        horizontal
+        showsHorizontalScrollIndicator={false}
+      />
+    </ScrollView>
   )
 }
 
