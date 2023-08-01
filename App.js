@@ -16,6 +16,7 @@ import { WaitingScreen } from './components/waiting/WaitingScreen';
 import { Activity } from './components/activity/Activity';
 import { ProfileCollecteur } from './components/profile/ProfileCollecteur';
 import { SearchScreen } from './components/search/SearchScreen';
+import { InfoScreen } from './components/infos/InfoScreen';
 
 const Tab = createMaterialBottomTabNavigator();
 const Stack = createNativeStackNavigator();
@@ -109,6 +110,20 @@ const ActivityStack = () => {
   )
 }
 
+const InfoStack = () => {
+  return (
+    <Stack.Navigator>
+      <Stack.Screen
+        name="infoScreen"
+        component={InfoScreen}
+        options={{
+          title: 'Eco Infos'
+        }}
+      />
+    </Stack.Navigator>
+  )
+}
+
 
 export default function App() {
   return (
@@ -136,7 +151,7 @@ export default function App() {
                 />
                 <Tab.Screen
                   name="Eco Infos "
-                  component={HomeScreen}
+                  component={InfoStack}
                   options={{
                     tabBarIcon: ({color, size}) => <FontAwesome5 name='newspaper' color={color} size={23} />
                   }}
