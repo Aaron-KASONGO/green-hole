@@ -14,7 +14,8 @@ import { NotificationScreen } from './components/notification/NotificationScreen
 import { AbonnementScreen } from './components/abonnement/AbonnementScreen';
 import { WaitingScreen } from './components/waiting/WaitingScreen';
 import { Activity } from './components/activity/Activity';
-import { ProfileCollecteur } from './components/ProfileCollecteur/ProfileCollecteur';
+import { ProfileCollecteur } from './components/profile/ProfileCollecteur';
+import { SearchScreen } from './components/search/SearchScreen';
 
 const Tab = createMaterialBottomTabNavigator();
 const Stack = createNativeStackNavigator();
@@ -95,6 +96,13 @@ const ActivityStack = () => {
         component={ProfileCollecteur}
         options={{
           title: 'Profile collecteur'
+        }}
+      />
+      <Stack.Screen
+        name="searchScreen"
+        component={SearchScreen}
+        options={{
+          title: 'Recherche collecteurs'
         }}
       />
     </Stack.Navigator>

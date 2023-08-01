@@ -58,6 +58,7 @@ export const Activity = ({navigation}) => {
             paddingVertical: 2
           }}
           mode='outlined'
+          onPress={() => navigation.navigate('searchScreen')}
         >
           <FontAwesome5 name='search' size={20} />
           <Text>   Search</Text>
