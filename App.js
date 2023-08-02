@@ -17,6 +17,8 @@ import { Activity } from './components/activity/Activity';
 import { ProfileCollecteur } from './components/profile/ProfileCollecteur';
 import { SearchScreen } from './components/search/SearchScreen';
 import { InfoScreen } from './components/infos/InfoScreen';
+import { InfoDetailScreen } from './components/infodetail/InfoDetailScreen';
+import { HomeScreenCollecteur } from './components/Homecollecteur/HomeScreenCollecteur';
 
 const Tab = createMaterialBottomTabNavigator();
 const Stack = createNativeStackNavigator();
@@ -120,6 +122,68 @@ const InfoStack = () => {
           title: 'Eco Infos'
         }}
       />
+
+    <Stack.Screen
+        name="detailInfos"
+        component={InfoDetailScreen}
+        options={{
+          title: 'Detail infos'
+        }}
+      />
+    </Stack.Navigator>
+  )
+}
+
+const HomeCollecteurSack = ()  => {
+  return (
+    <Stack.Navigator>
+      <Stack.Screen
+        name='homeCollecteur'
+        component={HomeScreenCollecteur}
+        options={{
+          title: 'Acceuil'
+        }}
+      />
+
+      <Stack.Screen
+          name='profile'
+          component={ProfileScreen}
+          options={{
+            title: 'Profile',
+            headerShadowVisible: false
+          }}
+        />
+        <Stack.Screen
+          name='notifications'
+          component={NotificationScreen}
+          options={{
+            title: 'Notifications'
+          }}
+        />
+
+        <Stack.Screen
+          name='waitinglist'
+          component={WaitingScreen}
+          options={{
+            title: 'Agenda'
+          }}
+        />
+
+        <Stack.Screen
+          name='demandeList'
+          component={WaitingScreen}
+          options={{
+            title: 'Demandes'
+          }}
+        />
+        
+        <Stack.Screen
+          name='about'
+          component={HomeScreen}
+          options={{
+            title: 'À propos'
+          }}
+        /> 
     </Stack.Navigator>
   )
 }
@@ -133,7 +197,7 @@ export default function App() {
           true ?
           <Tab.Navigator>
             {
-              true ?
+              false ?
               <>
                 <Tab.Screen
                   name="Acceuil"
@@ -160,7 +224,7 @@ export default function App() {
               <>
               <Tab.Screen
                 name="Acceuil"
-                component={HomeScreen}
+                component={HomeCollecteurSack}
                 options={{
                   tabBarIcon: ({color, size}) => <FontAwesome5 name='home' color={color} size={23} />
                 }}

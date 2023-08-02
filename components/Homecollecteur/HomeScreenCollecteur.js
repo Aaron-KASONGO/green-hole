@@ -1,13 +1,11 @@
 import React, { useEffect, useState } from 'react'
-import { FlatList, Image, Pressable, SafeAreaView, ScrollView, TouchableOpacity, View } from 'react-native'
-import { FontAwesome5, Entypo } from "@expo/vector-icons";
-import { Avatar, Card, FAB, IconButton, Portal, Text } from 'react-native-paper';
-import { borderRadius } from '../../ThemValues';
-import { CardHistoric } from './Card_Historic';
+import { FlatList, Image, ScrollView, View } from 'react-native'
+import { Avatar, Button, Card, FAB, IconButton, Portal, Text } from 'react-native-paper'
+import { borderRadius } from '../../ThemValues'
+import { CardAbonne } from './CardAbonne'
+import { MyButton } from '../generic/MyButton'
 
-
-export const HomeScreen = ({navigation}) => {
-
+export const HomeScreenCollecteur = ({navigation}) => {
   const [state, setState] = useState({ open: false });
 
   const onStateChange = ({ open }) => setState({ open });
@@ -36,9 +34,10 @@ export const HomeScreen = ({navigation}) => {
   useEffect(() => {
     updateHeaderLeft();
   }, []);
-  
+
   return (
-    <ScrollView
+    <>
+      <ScrollView
       style={{
         padding:10
       }}
@@ -66,7 +65,7 @@ export const HomeScreen = ({navigation}) => {
               }}
             source={require('../../assets/winner.png')}
             />
-            <Text style={{ color: 'white'}} variant='displaySmall'>200 Points</Text>
+            <Text style={{ color: 'white'}} variant='displaySmall'>200 Travaux</Text>
           </View>
         </Card.Content>
       </Card>
@@ -85,7 +84,7 @@ export const HomeScreen = ({navigation}) => {
           onPress={() => navigation.navigate('waitinglist')}
         >
           <Card.Title
-            title={<Text variant='labelLarge' style={{ fontWeight: 'bold' }}>En cours</Text>}
+            title={<Text variant='labelLarge' style={{ fontWeight: 'bold' }}>Mon agenda</Text>}
             right={() => <IconButton icon='progress-alert' />}
           />
           <Card.Content
@@ -106,7 +105,7 @@ export const HomeScreen = ({navigation}) => {
           onPress={() => navigation.navigate('abonnementList')}
         >
           <Card.Title
-            title={<Text variant='labelLarge' style={{ fontWeight: 'bold' }}>Abonnement(s)</Text>}
+            title={<Text variant='labelLarge' style={{ fontWeight: 'bold' }}>Demande(s)</Text>}
             right={() => <IconButton icon='link' />}
           />
           <Card.Content
@@ -120,8 +119,25 @@ export const HomeScreen = ({navigation}) => {
           </Card.Content>
         </Card>
       </View>
-      <Text variant='titleMedium' style={{ fontWeight: 'bold', marginVertical: 5}}>Historique</Text>
+      <View
+        style={{
+          flexDirection: 'row',
+          justifyContent: 'space-between',
+          alignItems: 'center'
+        }}
+      >
+        <Text variant='titleMedium' style={{ fontWeight: 'bold', marginVertical: 5}}>Abonnées(15)</Text>
+        <Button mode='text' style={{ marginVertical: 5}}>Voir plus</Button>
+      </View>
       <View>
+      <FlatList
+          scrollEnabled={true}
+          nestedScrollEnabled={true}
+          data={DATA}
+          renderItem={({item}) => <CardAbonne />}
+          keyExtractor={item => item.id}
+          horizontal
+        />
       <Portal>
         <FAB.Group
           open={open}
@@ -132,13 +148,8 @@ export const HomeScreen = ({navigation}) => {
           icon={open ? 'send' : 'plus'}
           actions={[
             {
-              icon: 'account-group',
-              label: 'Abonnés',
-              onPress: () => console.log('Pressed star'),
-            },
-            {
-              icon: 'account-tie-voice',
-              label: 'broadcast',
+              icon: 'camera',
+              label: 'Trier',
               onPress: () => console.log('Pressed email'),
             },
           ]}
@@ -151,23 +162,10 @@ export const HomeScreen = ({navigation}) => {
         />
       </Portal>
       </View>
-      <SafeAreaView
-        style={{
-          height: 385
-        }}
-      >
-        <FlatList
-          scrollEnabled={true}
-          nestedScrollEnabled={true}
-          data={DATA}
-          renderItem={({item}) => <CardHistoric title={item.title} date={item.date} />}
-          keyExtractor={item => item.id}
-        />
-      </SafeAreaView>
-    </ScrollView>
+      </ScrollView>
+    </>
   )
 }
-
 
 const DATA = [
   {

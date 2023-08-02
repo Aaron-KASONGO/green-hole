@@ -10,7 +10,8 @@ export const CardAbonnement = ({title, url}) => {
         <Card
             style={{
                 marginBottom: 3,
-                borderRadius: borderRadius
+                borderRadius: borderRadius,
+                marginHorizontal: 5
             }}
         >
             <Card.Content style={{ paddingVertical: 4, paddingStart: 4, display: 'flex', flexDirection: 'row'}}>
