@@ -136,7 +136,7 @@ export const HomeScreenCollecteur = ({navigation}) => {
         }}
       >
         <Text variant='titleMedium' style={{ fontWeight: 'bold', marginVertical: 5}}>Abonnées(15)</Text>
-        <Button mode='text' style={{ marginVertical: 5}}>Voir plus</Button>
+        <Button mode='text' onPress={() => navigation.navigate('voirPlus')} style={{ marginVertical: 5}}>Voir plus</Button>
       </View>
       <View>
       <FlatList

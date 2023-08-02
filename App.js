@@ -21,6 +21,7 @@ import { InfoDetailScreen } from './components/infodetail/InfoDetailScreen';
 import { HomeScreenCollecteur } from './components/Homecollecteur/HomeScreenCollecteur';
 import { MenuProvider } from 'react-native-popup-menu';
 import { ProfileAbonne } from './components/profile/ProfileAbonne';
+import { VoiPlus } from './components/Homecollecteur/VoiPlus';
 
 const Tab = createMaterialBottomTabNavigator();
 const Stack = createNativeStackNavigator();
@@ -185,7 +186,15 @@ const HomeCollecteurSack = ()  => {
           options={{
             title: 'Profile Abonné'
           }}
-        /> 
+        />
+
+        <Stack.Screen
+          name='voirPlus'
+          component={VoiPlus}
+          options={{
+            title: 'Abonnés'
+          }}
+        />
         
         <Stack.Screen
           name='about'
@@ -241,14 +250,14 @@ export default function App() {
               />
               <Tab.Screen
                 name="Activity"
-                component={HomeScreen}
+                component={ActivityStack}
                 options={{
                   tabBarIcon: ({color, size}) => <FontAwesome5 name='store' color={color} size={23} />
                 }}
               />
               <Tab.Screen
                 name="Eco Infos "
-                component={HomeScreen}
+                component={InfoStack}
                 options={{
                   tabBarIcon: ({color, size}) => <FontAwesome5 name='newspaper' color={color} size={23} />
                 }}
