@@ -16,7 +16,7 @@ export const CardInfos = ({title, url, description, navigation}) => {
         >
             <Card.Content style={{ paddingVertical: 4, paddingStart: 4, display: 'flex', flexDirection: 'row'}}>
             <View>
-                <Image style={{ width: 100, height: 100, borderRadius: borderRadius }} source={require('../../assets/home_service.jpeg')} alt='iMAGE' />
+                <Image style={{ width: 100, height: 100, borderRadius: borderRadius }} source={{ uri: 'https://source.unsplash.com/random?sig='}} alt='iMAGE' />
             </View>
             <View style={{ flex: 1,paddingVertical: 5, paddingHorizontal: 10 }}>
 
