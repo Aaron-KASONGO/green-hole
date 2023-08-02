@@ -19,6 +19,8 @@ import { SearchScreen } from './components/search/SearchScreen';
 import { InfoScreen } from './components/infos/InfoScreen';
 import { InfoDetailScreen } from './components/infodetail/InfoDetailScreen';
 import { HomeScreenCollecteur } from './components/Homecollecteur/HomeScreenCollecteur';
+import { MenuProvider } from 'react-native-popup-menu';
+import { ProfileAbonne } from './components/profile/ProfileAbonne';
 
 const Tab = createMaterialBottomTabNavigator();
 const Stack = createNativeStackNavigator();
@@ -176,6 +178,14 @@ const HomeCollecteurSack = ()  => {
             title: 'Demandes'
           }}
         />
+
+        <Stack.Screen
+          name='profileAbonne'
+          component={ProfileAbonne}
+          options={{
+            title: 'Profile Abonné'
+          }}
+        /> 
         
         <Stack.Screen
           name='about'

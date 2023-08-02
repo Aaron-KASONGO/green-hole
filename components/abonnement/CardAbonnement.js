@@ -4,7 +4,7 @@ import { borderRadius } from '../../ThemValues'
 import { AntDesign, FontAwesome } from "@expo/vector-icons";
 import { Image, View } from 'react-native';
 
-export const CardAbonnement = ({title, url}) => {
+export const CardAbonnement = ({title, url, navigation}) => {
   return (
     <>
         <Card

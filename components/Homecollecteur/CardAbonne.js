@@ -4,7 +4,7 @@ import { Avatar, Card, Text } from 'react-native-paper'
 
 const {width, height} = Dimensions.get("screen");
 
-export const CardAbonne = () => {
+export const CardAbonne = ({navigation}) => {
   return (
     <>
         <Card
@@ -14,6 +14,8 @@ export const CardAbonne = () => {
             alignItems: 'center',
             margin: 5,
           }}
+
+          onPress={() => navigation.navigate('profileAbonne')}
         >
           <View
             style={{

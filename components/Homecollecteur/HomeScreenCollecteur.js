@@ -1,12 +1,19 @@
 import React, { useEffect, useState } from 'react'
 import { FlatList, Image, ScrollView, View } from 'react-native'
-import { Avatar, Button, Card, FAB, IconButton, Portal, Text } from 'react-native-paper'
+import { Avatar, Button, Card, Divider, FAB, IconButton, Menu, Portal, Text } from 'react-native-paper'
 import { borderRadius } from '../../ThemValues'
 import { CardAbonne } from './CardAbonne'
-import { MyButton } from '../generic/MyButton'
+import { FontAwesome, Entypo } from '@expo/vector-icons';
+import { MenuOption, MenuOptions, MenuTrigger } from 'react-native-popup-menu'
+
 
 export const HomeScreenCollecteur = ({navigation}) => {
   const [state, setState] = useState({ open: false });
+  const [visible, setVisible] = useState(false);
+
+  const openMenu = () => setVisible(true);
+
+  const closeMenu = () => setVisible(false);
 
   const onStateChange = ({ open }) => setState({ open });
 
@@ -18,13 +25,15 @@ export const HomeScreenCollecteur = ({navigation}) => {
       headerRight: () => {
         return (
           <>
-            <IconButton
-              onPress={() => navigation.navigate('notifications')}
-              icon='bell'
-            />
-            <IconButton
-              icon='dots-vertical'
-            />
+            <FontAwesome name='bell' style={{marginHorizontal: 4}} size={20} onPress={() => navigation.navigate('notifications')} />
+            <Entypo name='dots-three-vertical' style={{marginHorizontal: 4}} size={18} />
+            <Menu>
+              <MenuTrigger text='marche' />
+              <MenuOptions>
+                <MenuOption text='Historique' />
+                <MenuOption text='À propos' />
+              </MenuOptions>
+            </Menu>
           </>
         )
       }
@@ -102,7 +111,7 @@ export const HomeScreenCollecteur = ({navigation}) => {
             flex: 1,
             marginStart: 5
           }}
-          onPress={() => navigation.navigate('abonnementList')}
+          onPress={() => navigation.navigate('waitinglist')}
         >
           <Card.Title
             title={<Text variant='labelLarge' style={{ fontWeight: 'bold' }}>Demande(s)</Text>}
@@ -134,7 +143,7 @@ export const HomeScreenCollecteur = ({navigation}) => {
           scrollEnabled={true}
           nestedScrollEnabled={true}
           data={DATA}
-          renderItem={({item}) => <CardAbonne />}
+          renderItem={({item}) => <CardAbonne navigation={navigation} />}
           keyExtractor={item => item.id}
           horizontal
         />
