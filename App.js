@@ -5,6 +5,12 @@ import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { NavigationContainer, DefaultTheme, DarkTheme } from '@react-navigation/native';
 import { HomeScreen } from './components/home/HomeScreen';
 
+import 'react-native-url-polyfill/auto'
+import { useState, useEffect } from 'react'
+import { supabase } from './lib/supabase'
+import Auth from './components/Auth'
+import Account from './components/Account'
+
 import { FontAwesome5 } from "@expo/vector-icons";
 import { LoginScreen } from './components/auth/LoginScreen';
 import { SinupScreen } from './components/auth/SinupScreen';
@@ -209,6 +215,19 @@ const HomeCollecteurSack = ()  => {
 
 
 export default function App() {
+
+  const [session, setSession] = useState(null)
+
+  useEffect(() => {
+    supabase.auth.getSession().then(({ data: { session } }) => {
+      setSession(session)
+    })
+
+    supabase.auth.onAuthStateChange((_event, session) => {
+      setSession(session)
+    })
+  }, [])
+
   return (
     <PaperProvider theme={theme}>
       <NavigationContainer theme={navTheme}>
