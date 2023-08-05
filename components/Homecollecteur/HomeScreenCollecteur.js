@@ -1,10 +1,13 @@
 import React, { useEffect, useState } from 'react'
-import { FlatList, Image, ScrollView, View } from 'react-native'
+import { Dimensions, FlatList, Image, ImageBackground, ScrollView, View } from 'react-native'
 import { Avatar, Button, Card, Divider, FAB, IconButton, Menu, Portal, Text } from 'react-native-paper'
 import { borderRadius } from '../../ThemValues'
 import { CardAbonne } from './CardAbonne'
-import { FontAwesome, Entypo } from '@expo/vector-icons';
+import { FontAwesome, Entypo, Feather, AntDesign } from '@expo/vector-icons';
 import { MenuOption, MenuOptions, MenuTrigger } from 'react-native-popup-menu'
+
+const {width, height} = Dimensions.get("screen");
+
 
 
 export const HomeScreenCollecteur = ({navigation}) => {
@@ -25,8 +28,8 @@ export const HomeScreenCollecteur = ({navigation}) => {
       headerRight: () => {
         return (
           <>
-            <FontAwesome name='bell' style={{marginHorizontal: 4}} size={20} onPress={() => navigation.navigate('notifications')} />
-            <Entypo name='dots-three-vertical' style={{marginHorizontal: 4}} size={18} />
+            <FontAwesome color={'#FFFFFF'} name='bell' style={{marginHorizontal: 4}} size={20} onPress={() => navigation.navigate('notifications')} />
+            <Entypo color={'#FFFFFF'} name='dots-three-vertical' style={{marginHorizontal: 4}} size={18} />
             <Menu>
               <MenuTrigger text='marche' />
               <MenuOptions>
@@ -51,31 +54,28 @@ export const HomeScreenCollecteur = ({navigation}) => {
         padding:10
       }}
     >
-      <Text variant='titleMedium' style={{ fontWeight: 'bold', marginVertical: 5}}>Points gagnées</Text>
+      <Text variant='titleMedium' style={{ fontWeight: 'bold', marginVertical: 5}}>Travaux effectués</Text>
       <Card>
         <Card.Content
           style={{
-            backgroundColor: '#5F8D4E',
-            borderRadius: borderRadius
+
+            borderRadius: borderRadius,
           }}
+          
         >
-          <View
+          <ImageBackground
             style={{
               display: 'flex',
               flexDirection: 'row',
               justifyContent: 'center',
-              alignItems: 'center'
+              alignItems: 'center',
+              height: height * 0.24
             }}
+            source={require('../../assets/travaux.jpg')}
           >
-            <Image
-              style={{
-                width: 150,
-                height: 170
-              }}
-            source={require('../../assets/winner.png')}
-            />
             <Text style={{ color: 'white'}} variant='displaySmall'>200 Travaux</Text>
-          </View>
+            <View></View>
+          </ImageBackground>
         </Card.Content>
       </Card>
       <Text variant='titleMedium' style={{ fontWeight: 'bold', marginVertical: 5}}>Informations</Text>
@@ -93,16 +93,18 @@ export const HomeScreenCollecteur = ({navigation}) => {
           onPress={() => navigation.navigate('waitinglist')}
         >
           <Card.Title
-            title={<Text variant='labelLarge' style={{ fontWeight: 'bold' }}>Mon agenda</Text>}
+            title={<Text theme={{ colors: { onSurface: '#212121'}}} variant='labelLarge' style={{ fontWeight: 'bold' }}>Mon agenda</Text>}
             right={() => <IconButton icon='progress-alert' />}
           />
           <Card.Content
             style={{
               display: 'flex',
-              justifyContent: 'center',
-              alignItems: 'center'
+              justifyContent: 'space-around',
+              alignItems: 'center',
+              flexDirection: 'row'
             }}
           >
+            <AntDesign color='#00796B' name='calendar' size={30} />
             <Text variant='displayMedium'>14</Text>
           </Card.Content>
         </Card>
@@ -114,16 +116,18 @@ export const HomeScreenCollecteur = ({navigation}) => {
           onPress={() => navigation.navigate('waitinglist')}
         >
           <Card.Title
-            title={<Text variant='labelLarge' style={{ fontWeight: 'bold' }}>Demande(s)</Text>}
+            title={<Text theme={{ colors: { onSurface: '#212121'}}} variant='labelLarge' style={{ fontWeight: 'bold' }}>Demande(s)</Text>}
             right={() => <IconButton icon='link' />}
           />
           <Card.Content
             style={{
               display: 'flex',
-              justifyContent: 'center',
-              alignItems: 'center'
+              justifyContent: 'space-around',
+              alignItems: 'center',
+              flexDirection: 'row'
             }}
           >
+            <Feather color='#00796B' name='send' size={30} />
             <Text variant='displayMedium'>14</Text>
           </Card.Content>
         </Card>

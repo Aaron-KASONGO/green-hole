@@ -30,7 +30,7 @@ export const CardAbonne = ({navigation}) => {
               size={75}
             />
             <View>
-              <Text variant='titleMedium'>Junior Memberi</Text>
+              <Text theme={{ colors: { onSurface: '#212121'}}} variant='titleMedium'>Junior Memberi</Text>
             </View>
           </View>
         </Card>

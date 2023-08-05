@@ -2,13 +2,13 @@ import { StatusBar } from 'expo-status-bar';
 import { Pressable, StyleSheet, Text, View } from 'react-native';
 import { createMaterialBottomTabNavigator } from "@react-navigation/material-bottom-tabs";
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
-import { NavigationContainer } from '@react-navigation/native';
+import { NavigationContainer, DefaultTheme, DarkTheme } from '@react-navigation/native';
 import { HomeScreen } from './components/home/HomeScreen';
 
 import { FontAwesome5 } from "@expo/vector-icons";
 import { LoginScreen } from './components/auth/LoginScreen';
 import { SinupScreen } from './components/auth/SinupScreen';
-import { PaperProvider } from 'react-native-paper';
+import { PaperProvider, MD3LightTheme } from 'react-native-paper';
 import { ProfileScreen } from './components/profile/ProfileScreen';
 import { NotificationScreen } from './components/notification/NotificationScreen';
 import { AbonnementScreen } from './components/abonnement/AbonnementScreen';
@@ -210,8 +210,8 @@ const HomeCollecteurSack = ()  => {
 
 export default function App() {
   return (
-    <PaperProvider>
-      <NavigationContainer>
+    <PaperProvider theme={theme}>
+      <NavigationContainer theme={navTheme}>
         {
           true ?
           <Tab.Navigator>
@@ -299,3 +299,29 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
   },
 });
+
+const theme = {
+  ...MD3LightTheme,
+  colors: {
+    ...MD3LightTheme.colors,
+    primary: '#009688',
+    onPrimaryContainer: '#FFFFFF',
+    primaryContainer: '#00796B',
+    secondary: '#B2DFDB',
+    tertiary: '#FFFFFF',
+    brandPrimary: '#009688',
+    onSurface: '#00796B',
+    outline: '#00796B'
+  }
+}
+
+const navTheme = {
+  dark: false,
+  colors: {
+    primary: '#00796B',
+    background: '#fefefe',
+    card: '#00796B',
+    text: '#FFFFFF',
+    border: '#00796B',
+  }
+}

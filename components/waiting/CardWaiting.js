@@ -13,7 +13,7 @@ export const CardWaiting = ({setModalVisibility}) => {
         >
           <Card.Title
             title={<Text variant='titleMedium'>12:24pm</Text>}
-            subtitle={<Text variant='bodyMedium'>Recolte Disarde</Text>}
+            subtitle={<Text theme={{ colors: {onSurface: '#757575'}}} variant='bodyMedium'>Recolte Disarde</Text>}
             left={(props) => <Avatar.Icon {...props} icon='alarm' />}
             right={(props) => <MaterialIcons onPress={() => setModalVisibility(true)} name='clear' size={20} />}
           />
