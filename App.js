@@ -232,7 +232,7 @@ export default function App() {
     <PaperProvider theme={theme}>
       <NavigationContainer theme={navTheme}>
         {
-          true ?
+          false ?
           <Tab.Navigator>
             {
               false ?
