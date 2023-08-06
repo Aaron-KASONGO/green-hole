@@ -8,7 +8,7 @@ export const SinupScreen = ({navigation}) => {
   const [mark, setMark] = useState('');
   const [adresse, setAdresse] = useState('');
   const [prenom, setPrenom] = useState('');
-  const [Nom, setNom] = useState('');
+  const [nom, setNom] = useState('');
   const [email, setEmail] = useState('');
   const [description, setDescription] = useState('');
   const [password, setPassword] = useState('');
@@ -41,18 +41,18 @@ export const SinupScreen = ({navigation}) => {
             <TextInput
                 style={style.textInputBetween}
                 label={'Marque'}
-                onChangeText={(text) => setEmail(text)}
-                value={email}
+                onChangeText={(text) => setMark(text)}
+                value={mark}
                 mode='outlined'
-                left={<TextInput.Icon icon={'email'} />}
+                left={<TextInput.Icon icon={'office-building'} />}
             />
             <TextInput
                 style={style.textInputBetween}
                 label={'Adresse'}
-                onChangeText={(text) => setEmail(text)}
-                value={email}
+                onChangeText={(text) => setAdresse(text)}
+                value={adresse}
                 mode='outlined'
-                left={<TextInput.Icon icon={'email'} />}
+                left={<TextInput.Icon icon={'map-marker'} />}
             />
           </View>
 
@@ -62,18 +62,18 @@ export const SinupScreen = ({navigation}) => {
             <TextInput
                 style={style.textInputBetween}
                 label={'Prénom'}
-                onChangeText={(text) => setEmail(text)}
-                value={email}
+                onChangeText={(text) => setPrenom(text)}
+                value={prenom}
                 mode='outlined'
-                left={<TextInput.Icon icon={'email'} />}
+                left={<TextInput.Icon icon={'account'} />}
             />
             <TextInput
                 style={style.textInputBetween}
                 label={'Nom'}
-                onChangeText={(text) => setEmail(text)}
-                value={email}
+                onChangeText={(text) => setNom(text)}
+                value={nom}
                 mode='outlined'
-                left={<TextInput.Icon icon={'email'} />}
+                left={<TextInput.Icon icon={'account'} />}
             />
           </View>
 
@@ -94,28 +94,18 @@ export const SinupScreen = ({navigation}) => {
             <TextInput
                 style={style.textInput}
                 label={'Description'}
-                onChangeText={(text) => setEmail(text)}
-                value={email}
+                onChangeText={(text) => setDescription(text)}
+                value={description}
                 mode='outlined'
                 multiline
-                left={<TextInput.Icon icon={'email'} />}
+                left={<TextInput.Icon icon={'note-text'} />}
             />
           </View>
 
           <View style={style.containerBetween}>
             <TextInput
                 style={style.textInputBetween}
-                label={'Votre mot de passe'}
-                onChangeText={(text) => setPassword(text)}
-                value={password}
-                secureTextEntry={eye}
-                mode='outlined'
-                left={<TextInput.Icon icon={'key'} />}
-                right={eye ? <TextInput.Icon icon={'eye'} onPress={() => setEye(false)} /> : <TextInput.Icon icon={'eye-off'} onPress={() => setEye(true)} />}
-            />
-            <TextInput
-                style={style.textInputBetween}
-                label={'Confirmez le mdp'}
+                label={'Créer un mot de passe'}
                 onChangeText={(text) => setPassword(text)}
                 value={password}
                 secureTextEntry={eye}
