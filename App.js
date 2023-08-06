@@ -145,7 +145,11 @@ const InfoStack = () => {
 
 const HomeCollecteurSack = ()  => {
   return (
-    <Stack.Navigator>
+    <Stack.Navigator
+      screenOptions={{
+        animation: 'slide_from_right'
+      }}
+    >
       <Stack.Screen
         name='homeCollecteur'
         component={HomeScreenCollecteur}
@@ -159,7 +163,8 @@ const HomeCollecteurSack = ()  => {
           component={ProfileScreen}
           options={{
             title: 'Profile',
-            headerShadowVisible: false
+            headerShadowVisible: false,
+            animation: 'slide_from_left'
           }}
         />
         <Stack.Screen
@@ -174,7 +179,8 @@ const HomeCollecteurSack = ()  => {
           name='waitinglist'
           component={WaitingScreen}
           options={{
-            title: 'Agenda'
+            title: 'Agenda',
+            animation: 'slide_from_left'
           }}
         />
 
@@ -232,8 +238,13 @@ export default function App() {
     <PaperProvider theme={theme}>
       <NavigationContainer theme={navTheme}>
         {
-          false ?
-          <Tab.Navigator>
+          (session && session.user) ?
+          <Tab.Navigator
+            screenOptions={{
+              
+            }}
+          >
+
             {
               false ?
               <>
@@ -286,7 +297,12 @@ export default function App() {
           </Tab.Navigator> :
           (
             <>
-              <Stack.Navigator>
+              <Stack.Navigator
+                screenOptions={{
+                  gestureDirection: 'vertical',
+                  animation: 'slide_from_bottom',
+                }}
+              >
                 <Stack.Screen
                   name='login'
                   component={LoginScreen}
@@ -309,6 +325,8 @@ export default function App() {
     </PaperProvider>
   );
 }
+
+
 
 const styles = StyleSheet.create({
   container: {

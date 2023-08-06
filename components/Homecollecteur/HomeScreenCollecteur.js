@@ -113,7 +113,7 @@ export const HomeScreenCollecteur = ({navigation}) => {
             flex: 1,
             marginStart: 5
           }}
-          onPress={() => navigation.navigate('waitinglist')}
+          onPress={() => navigation.navigate('demandeList')}
         >
           <Card.Title
             title={<Text theme={{ colors: { onSurface: '#212121'}}} variant='labelLarge' style={{ fontWeight: 'bold' }}>Demande(s)</Text>}

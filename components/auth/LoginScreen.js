@@ -41,32 +41,42 @@ export const LoginScreen = ({navigation}) => {
             <View
                 style={style.containerInput}
             >
-                <TextInput
-                    style={style.textInput}
-                    label={'E-mail'}
-                    onChangeText={(text) => setEmail(text)}
-                    value={email}
-                    mode='outlined'
-                    left={<TextInput.Icon icon={'email'} />}
-                />
-                <TextInput
-                    style={style.textInput}
-                    label={'Votre mot de passe'}
-                    onChangeText={(text) => setPassword(text)}
-                    value={password}
-                    secureTextEntry={eye}
-                    mode='outlined'
-                    left={<TextInput.Icon icon={'key'} />}
-                    right={eye ? <TextInput.Icon icon={'eye'} onPress={() => setEye(false)} /> : <TextInput.Icon icon={'eye-off'} onPress={() => setEye(true)} />}
-                />
+                <View style={style.containerSpace}>
+
+                    <TextInput
+                        style={style.textInput}
+                        label={'E-mail'}
+                        onChangeText={(text) => setEmail(text)}
+                        value={email}
+                        mode='outlined'
+                        left={<TextInput.Icon icon={'email'} />}
+                    />
+                </View>
+
+                <View style={style.containerSpace}>
+                    <TextInput
+                        style={style.textInput}
+                        label={'Votre mot de passe'}
+                        onChangeText={(text) => setPassword(text)}
+                        value={password}
+                        secureTextEntry={eye}
+                        mode='outlined'
+                        left={<TextInput.Icon icon={'key'} />}
+                        right={eye ? <TextInput.Icon icon={'eye'} onPress={() => setEye(false)} /> : <TextInput.Icon icon={'eye-off'} onPress={() => setEye(true)} />}
+                    />
+
+                </View>
             </View>
-            <Button
-                style={style.button}
-                mode='contained'
-                disabled={loading}
-                onPress={() => signInWithEmail()}
-            >Connexion</Button>
-            <Button disabled={loading} onPress={() => navigation.navigate('signup')}>Créer un compte</Button>
+            <View style={style.containerSpace}>
+                <Button
+                    style={style.button}
+                    mode='contained'
+                    disabled={loading}
+                    onPress={() => signInWithEmail()}
+                >Connexion</Button>
+                <Button disabled={loading} onPress={() => navigation.navigate('signup')}>Créer un compte</Button>
+
+            </View>
         </View>
     </View>
   )
@@ -74,7 +84,7 @@ export const LoginScreen = ({navigation}) => {
 
 export const {width, height} = Dimensions.get("screen");
 
-const style = StyleSheet.create({
+export const style = StyleSheet.create({
     logo: {
         width: 180,
         height: 180,
@@ -84,14 +94,12 @@ const style = StyleSheet.create({
         alignItems: 'center',
     },
     textInput: {
-        width: width * 0.7,
-        borderRadius: borderRadius,
-        marginVertical: 5
+        marginHorizontal: 5
     },
     button: {
-        width: width * 0.7,
         borderRadius: borderRadius,
-        marginVertical: 20
+        marginVertical: 20,
+        marginHorizontal: 5
     },
     containerInput: {
         marginTop: 30
@@ -100,5 +108,19 @@ const style = StyleSheet.create({
         flex: 1,
         marginTop: statusBar,
         justifyContent: 'center'
+    },
+    containerBetween: {
+        flexDirection: 'row',
+        justifyContent: 'space-between',
+        width: width * 0.9,
+        alignSelf: 'center'
+    },
+    textInputBetween: {
+        flex: 1,
+        marginHorizontal: 5
+    },
+    containerSpace: {
+        width: width * 0.9,
+        alignSelf: 'center'
     }
 })
