@@ -74,7 +74,7 @@ export const LoginScreen = ({navigation}) => {
                     disabled={loading}
                     onPress={() => signInWithEmail()}
                 >Connexion</Button>
-                <Button disabled={loading} onPress={() => navigation.navigate('signup')}>Créer un compte</Button>
+                <Button disabled={loading} onPress={() => navigation.navigate('beforeSignup')}>Créer un compte</Button>
 
             </View>
         </View>

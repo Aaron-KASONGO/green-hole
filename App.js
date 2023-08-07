@@ -28,6 +28,7 @@ import { HomeScreenCollecteur } from './components/Homecollecteur/HomeScreenColl
 import { MenuProvider } from 'react-native-popup-menu';
 import { ProfileAbonne } from './components/profile/ProfileAbonne';
 import { VoiPlus } from './components/Homecollecteur/VoiPlus';
+import { BeforeSignup } from './components/auth/BeforeSignup';
 
 const Tab = createMaterialBottomTabNavigator();
 const Stack = createNativeStackNavigator();
@@ -309,6 +310,10 @@ export default function App() {
                   options={{
                     headerShown: false
                   }}
+                />
+                <Stack.Screen
+                  name='beforeSignup'
+                  component={BeforeSignup}
                 />
                 <Stack.Screen
                 name='signup'
