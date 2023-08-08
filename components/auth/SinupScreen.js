@@ -1,7 +1,9 @@
 import React, { useState } from 'react'
-import { View } from 'react-native'
+import { Alert, View } from 'react-native'
 import { style } from './LoginScreen'
 import { Button, Text, TextInput } from 'react-native-paper'
+import Auth from '../../data/Auth'
+import { supabase } from '../../lib/supabase'
 
 export const SinupScreen = ({route, navigation}) => {
   const { userType } = route.params;
@@ -18,43 +20,72 @@ export const SinupScreen = ({route, navigation}) => {
 
   const [loading, setLoading] = useState(false);
 
-  async function signUpWithEmailMenage() {
-    const data = {
-      adresse: adresse,
-      prenom: prenom,
-      nom: nom,
-      email: email,
-      description: description,
-      password: password
-    }
+  function signUpWithEmailMenage() {
     setLoading(true)
-    const { error } = await supabase.auth.signUp({
+    supabase.auth.signUp({
       email: email,
       password: password,
-    })
-
-    if (error) Alert.alert(error.message)
-    setLoading(false)
+    }).then((result) =>{
+      console.log(result)
+        if (result.error) {
+          Alert.alert(result.error.message)
+          setLoading(false)
+        } else {
+          supabase
+            .from('Menage')
+            .insert([
+                {
+                    nom: nom,
+                    prenom: prenom,
+                    adresse: adresse,
+                    description: description,
+                    email: email
+                },
+            ])
+            .select()
+            .then(response => {
+              console.log(response);
+              setLoading(false)
+              navigation.navigate('login')
+            })
+            .catch(error => setLoading(false))
+        }
+    }).catch((error) => setLoading(false))
   }
 
-  async function signUpWithEmailMenage() {
-    const data = {
-      mark: mark,
-      adresse: adresse,
-      prenom: prenom,
-      nom: nom,
-      email: email,
-      description: description,
-      password: password
-    }
+  function signUpWithEmailCollecteur() {
     setLoading(true)
-    const { error } = await supabase.auth.signUp({
+    supabase.auth.signUp({
       email: email,
       password: password,
-    })
+    }).then((result) =>{
+      console.log(result)
+        if (result.error) {
+          Alert.alert(result.error.message)
+          setLoading(false)
+        } else {
+          supabase
+            .from('Collecteur')
+            .insert([
+                {
+                    nom_mark: mark,
+                    nom: nom,
+                    prenom: prenom,
+                    adresse: adresse,
+                    description: description,
+                    email: email
+                },
+            ])
+            .select()
+            .then(response => {
+              console.log(response);
+              setLoading(false)
+              navigation.navigate('login')
+            })
+            .catch(error => setLoading(false))
+        }
+    }).catch((error) => setLoading(false))
 
-    if (error) Alert.alert(error.message)
-    setLoading(false)
   }
     
   return (
@@ -155,6 +186,7 @@ export const SinupScreen = ({route, navigation}) => {
                   style={style.button}
                   mode='contained'
                   disabled={loading}
+                  onPress={() => signUpWithEmailCollecteur()}
               >Créer un compte</Button>
               <Button disabled={loading} onPress={() => navigation.navigate('login')}>Se connecter</Button>
             </View>
@@ -245,6 +277,7 @@ export const SinupScreen = ({route, navigation}) => {
                   style={style.button}
                   mode='contained'
                   disabled={loading}
+                  onPress={() => signUpWithEmailMenage()}
               >Créer un compte</Button>
               <Button disabled={loading} onPress={() => navigation.navigate('login')}>Se connecter</Button>
             </View>
