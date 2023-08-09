@@ -4,10 +4,10 @@ Depuis un certain moment, il n’est pratiquement pas possible de parcourir plus
 Face à ce problème, nous proposons un système dont l’objectif principal est de ramener beaucoup plus de déchets vers des entreprises capables de les transformer ou du moins vers les bacs à poubelles et ainsi réduire le nombre de déchets dans notre pays.
 Le système doit également proposer des contenus éducatifs sur l’écologie, ce qui permettrait d’aider la population à s’informer sur la manière de recycler des déchets et aider à minimiser l’importance des déchets.
 ## Objectifs
-Réduire la présence de déchets dans les villes de la RDC et en particulier celle de Lubumbashi
-Ranimer l’enthousiasme des citoyens congolais pour l’environnement
-Ramener le plus possible de déchets au centre de déchets officiel
-Éduquer la population sur la gestion des déchets et le recyclage
+* Réduire la présence de déchets dans les villes de la RDC et en particulier celle de Lubumbashi
+* Ranimer l’enthousiasme des citoyens * congolais pour l’environnement
+* Ramener le plus possible de déchets au centre de déchets officiel
+* Éduquer la population sur la gestion des déchets et le recyclage
 ## Fonctionnalités
 * L'application doit permettre d'informer les entreprises de récolte de l'existence des entreprises de transformation.
 * L'application doit avoir une option pour permettre à des ménages de souscrire à un service de récolte de déchets
