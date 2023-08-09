@@ -29,6 +29,11 @@ import { MenuProvider } from 'react-native-popup-menu';
 import { ProfileAbonne } from './components/profile/ProfileAbonne';
 import { VoiPlus } from './components/Homecollecteur/VoiPlus';
 import { BeforeSignup } from './components/auth/BeforeSignup';
+import Demande from './data/Demande';
+import Menage from './data/Menage';
+import Collecteur from './data/Collecteur';
+import DemandeMenage from './data/dataMenage/Demande';
+import { ProfileSelfCollecteur } from './components/profile/ProfileSelfCollecteur';
 
 const Tab = createMaterialBottomTabNavigator();
 const Stack = createNativeStackNavigator();
@@ -161,7 +166,7 @@ const HomeCollecteurSack = ()  => {
 
       <Stack.Screen
           name='profile'
-          component={ProfileScreen}
+          component={ProfileSelfCollecteur}
           options={{
             title: 'Profile',
             headerShadowVisible: false,
@@ -224,9 +229,19 @@ const HomeCollecteurSack = ()  => {
 export default function App() {
 
   const [session, setSession] = useState(null)
+  const [collecteur, setCollecteur] = useState('null');
+
+  
+
+  //supabase.auth.signOut()
+    
+
+  //Demande.getDemandeValid(session.user.email).then(response => console.log(response))
+
 
   useEffect(() => {
     supabase.auth.getSession().then(({ data: { session } }) => {
+      
       setSession(session)
     })
 

@@ -38,7 +38,7 @@ export const HomeScreen = ({navigation}) => {
   }, []);
   
   return (
-    <ScrollView
+    <View
       style={{
         padding:10
       }}
@@ -164,7 +164,7 @@ export const HomeScreen = ({navigation}) => {
           keyExtractor={item => item.id}
         />
       </SafeAreaView>
-    </ScrollView>
+    </View>
   )
 }
 

@@ -1,10 +1,13 @@
 import React, { useEffect, useState } from 'react'
-import { Dimensions, FlatList, Image, ImageBackground, ScrollView, View } from 'react-native'
+import { Dimensions, FlatList, Image, ImageBackground, ScrollView, TouchableHighlight, TouchableNativeFeedback, TouchableWithoutFeedback, View } from 'react-native'
 import { Avatar, Button, Card, Divider, FAB, IconButton, Menu, Portal, Text } from 'react-native-paper'
 import { borderRadius } from '../../ThemValues'
 import { CardAbonne } from './CardAbonne'
 import { FontAwesome, Entypo, Feather, AntDesign } from '@expo/vector-icons';
 import { MenuOption, MenuOptions, MenuTrigger } from 'react-native-popup-menu'
+import Demande from '../../data/Demande'
+import { supabase } from '../../lib/supabase'
+import { Touchable } from 'react-native'
 
 const {width, height} = Dimensions.get("screen");
 
@@ -20,30 +23,48 @@ export const HomeScreenCollecteur = ({navigation}) => {
 
   const onStateChange = ({ open }) => setState({ open });
 
+  const [agenda, setAgenda] = useState([]);
+  const [demande, setDemande] = useState([]);
+
+  const [avatarImage, setAvatarImage] = useState(null);
+
   const { open } = state;
 
   const updateHeaderLeft = () => {
     navigation.setOptions({
-      headerLeft: () =>(<IconButton onPress={() => navigation.navigate('profile')} icon='account-circle' />),
+      headerLeft: () => {
+        return (
+          <>
+            {avatarImage ? (<TouchableWithoutFeedback onPress={() => navigation.navigate('profile')}><Avatar.Image size={40} source={{}} /></TouchableWithoutFeedback>): (<TouchableWithoutFeedback onPress={() => navigation.navigate('profile')}><Avatar.Text label='KG' size={40} color='green' style={{marginEnd: 5, backgroundColor: 'white'}} /></TouchableWithoutFeedback>)}
+          </>
+        )
+      },
       headerRight: () => {
         return (
           <>
             <FontAwesome color={'#FFFFFF'} name='bell' style={{marginHorizontal: 4}} size={20} onPress={() => navigation.navigate('notifications')} />
-            <Entypo color={'#FFFFFF'} name='dots-three-vertical' style={{marginHorizontal: 4}} size={18} />
-            <Menu>
-              <MenuTrigger text='marche' />
-              <MenuOptions>
-                <MenuOption text='Historique' />
-                <MenuOption text='À propos' />
-              </MenuOptions>
-            </Menu>
           </>
         )
       }
     })
   }
 
+
+  const getMonAgenda = () => {
+    
+    supabase.auth.getUser()
+      .then(response => Demande.getDemandeValid(response.data.user.email).then(result => setAgenda(result)))
+  }
+
+  const getDemande = () => {
+    
+    supabase.auth.getUser()
+      .then(response => Demande.getDemandeNotValid(response.data.user.email).then(result => setDemande(result)))
+  }
+
   useEffect(() => {
+    getDemande();
+    getMonAgenda();
     updateHeaderLeft();
   }, []);
 
@@ -105,7 +126,7 @@ export const HomeScreenCollecteur = ({navigation}) => {
             }}
           >
             <AntDesign color='#00796B' name='calendar' size={30} />
-            <Text variant='displayMedium'>14</Text>
+            <Text variant='displayMedium'>{agenda.length}</Text>
           </Card.Content>
         </Card>
         <Card
@@ -128,7 +149,7 @@ export const HomeScreenCollecteur = ({navigation}) => {
             }}
           >
             <Feather color='#00796B' name='send' size={30} />
-            <Text variant='displayMedium'>14</Text>
+            <Text variant='displayMedium'>{demande.length}</Text>
           </Card.Content>
         </Card>
       </View>

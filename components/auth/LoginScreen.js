@@ -4,6 +4,7 @@ import { Button, Text, TextInput } from 'react-native-paper'
 import { borderRadius, statusBar } from '../../ThemValues'
 import { MyButton } from '../generic/MyButton'
 import { supabase } from '../../lib/supabase'
+import Demande from '../../data/Demande'
 
 
 export const LoginScreen = ({navigation}) => {
@@ -14,13 +15,17 @@ export const LoginScreen = ({navigation}) => {
 
     async function signInWithEmail() {
         setLoading(true)
-        const { error } = await supabase.auth.signInWithPassword({
+        supabase.auth.signInWithPassword({
           email: email,
           password: password,
+        }).then((response) => {
+            if (response.error) {
+                Alert.alert(response.error.message)
+            } 
+            setLoading(false)
         })
     
-        if (error) Alert.alert(error.message)
-        setLoading(false)
+        
       }
 
 
