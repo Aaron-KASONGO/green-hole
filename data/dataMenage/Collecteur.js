@@ -3,15 +3,11 @@ import { supabase } from "../../lib/supabase";
 
 export default class CollecteurMenage{
 
-    static getMenage() {
-        return supabase.from('Menage')
-    }
-
-
     static async getCollecteurs(email) {
         
-        let { data, error } = await this.getMenage()
-            .select('nom, prenom, latitude, longitude, adresse, description, image, email, Souscription(id, created_at, Collecteur(id, mark, nom, prenom, description))')
+        let { data, error } = await supabase
+            .from('Menage')
+            .select('nom, prenom, latitude, longitude, adresse, description, image, email, Souscription(id, created_at,note, Collecteur(id, prenom, nom, image, email, description, Souscription(id, note)), Demande(id))')
             .eq('email', email)
         
         if (error) {

@@ -1,9 +1,12 @@
 import React, { useEffect, useState } from 'react'
-import { FlatList, Image, Pressable, SafeAreaView, ScrollView, TouchableOpacity, View } from 'react-native'
-import { FontAwesome5, Entypo } from "@expo/vector-icons";
+import { FlatList, Image, Pressable, SafeAreaView, ScrollView, TouchableOpacity, TouchableWithoutFeedback, View } from 'react-native'
+import { FontAwesome5, Entypo, AntDesign } from "@expo/vector-icons";
 import { Avatar, Card, FAB, IconButton, Portal, Text } from 'react-native-paper';
 import { borderRadius } from '../../ThemValues';
 import { CardHistoric } from './Card_Historic';
+import DemandeMenage from '../../data/dataMenage/Demande';
+import { supabase } from '../../lib/supabase';
+import CollecteurMenage from '../../data/dataMenage/Collecteur';
 
 
 export const HomeScreen = ({navigation}) => {
@@ -12,11 +15,21 @@ export const HomeScreen = ({navigation}) => {
 
   const onStateChange = ({ open }) => setState({ open });
 
+  const [enCours, setEnCours] = useState([]);
+  const [collecteurs, setCollecteurs] = useState([]);
+  const [avatarImage, setAvatarImage] = useState(null);
+
   const { open } = state;
 
   const updateHeaderLeft = () => {
     navigation.setOptions({
-      headerLeft: () =>(<IconButton onPress={() => navigation.navigate('profile')} icon='account-circle' />),
+      headerLeft: () => {
+        return (
+          <>
+            {avatarImage ? (<TouchableWithoutFeedback onPress={() => navigation.navigate('profile')}><Avatar.Image size={40} source={{}} /></TouchableWithoutFeedback>): (<TouchableWithoutFeedback onPress={() => navigation.navigate('profile')}><Avatar.Text label='KG' size={40} color='green' style={{marginEnd: 5, backgroundColor: 'white'}} /></TouchableWithoutFeedback>)}
+          </>
+        )
+      },
       headerRight: () => {
         return (
           <>
@@ -24,16 +37,33 @@ export const HomeScreen = ({navigation}) => {
               onPress={() => navigation.navigate('notifications')}
               icon='bell'
             />
-            <IconButton
-              icon='dots-vertical'
-            />
           </>
         )
       }
     })
   }
 
+  console.log(collecteurs)
+
+  const getEnCours = () => {
+    
+    supabase.auth.getUser()
+      .then(response => DemandeMenage.getDemandeEnCours(response.data.user.email).then(result => setEnCours(result)))
+  }
+
+  const getCollecteurs = () => {
+    
+    supabase.auth.getUser()
+      .then(response => CollecteurMenage.getCollecteurs(response.data.user.email).then(result => {
+        if (result[0]) {
+          setCollecteurs(result[0].Souscription)
+        }
+      }))
+  }
+
   useEffect(() => {
+    getCollecteurs();
+    getEnCours();
     updateHeaderLeft();
   }, []);
   
@@ -91,11 +121,13 @@ export const HomeScreen = ({navigation}) => {
           <Card.Content
             style={{
               display: 'flex',
-              justifyContent: 'center',
-              alignItems: 'center'
+              justifyContent: 'space-around',
+              alignItems: 'center',
+              flexDirection: 'row'
             }}
           >
-            <Text variant='displayMedium'>14</Text>
+            <AntDesign color='#00796B' name='calendar' size={30} />
+            <Text variant='displayMedium'>{enCours.length}</Text>
           </Card.Content>
         </Card>
         <Card
@@ -103,7 +135,7 @@ export const HomeScreen = ({navigation}) => {
             flex: 1,
             marginStart: 5
           }}
-          onPress={() => navigation.navigate('abonnementList')}
+          onPress={() => navigation.navigate('abonnementList', {collecteurs: collecteurs})}
         >
           <Card.Title
             title={<Text variant='labelLarge' style={{ fontWeight: 'bold' }}>Abonnement(s)</Text>}
@@ -112,11 +144,13 @@ export const HomeScreen = ({navigation}) => {
           <Card.Content
             style={{
               display: 'flex',
-              justifyContent: 'center',
-              alignItems: 'center'
+              justifyContent: 'space-around',
+              alignItems: 'center',
+              flexDirection: 'row'
             }}
           >
-            <Text variant='displayMedium'>14</Text>
+            <AntDesign color='#00796B' name='calendar' size={30} />
+            <Text variant='displayMedium'>{collecteurs.length}</Text>
           </Card.Content>
         </Card>
       </View>

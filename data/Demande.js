@@ -86,7 +86,7 @@ export default class Demande{
         
         let { data, error } = await supabase
             .from('Demande')
-            .select('titre, description, date_planification, Souscription(id, created_at, Collecteur(id, email)), Validation(id)')
+            .select('titre, description, date_planification, Souscription(id, created_at, note, Collecteur(id, email)), Validation(id)')
             .eq('Souscription.Collecteur.email', email)
         
         if (error) {

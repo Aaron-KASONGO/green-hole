@@ -28,10 +28,12 @@ export default class DemandeMenage{
 
     static async getDemandeEnCours(email) {
         
-        let { data, error } = await this.getMenage()
-            .select('nom, prenom, latitude, longitude, adresse, description, image, email, Souscription(id, created_at, Demande(id, created_at, titre, description, date_planification, Validation(id)))')
-            .eq('email', email)
-            .is('Souscription.Demande.Validation.id', null)
+        let { data, error } = await supabase
+            .from('Demande')
+            .select('titre, description, date_planification, Souscription(id, created_at, Menage(id, created_at, email)), Validation(id)')
+            .eq('Souscription.Menage.email', email)
+            .is('Validation.id', null)
+            .gte('date_planification', new Date().toUTCString())
         
         if (error) {
             Alert.alert(error.message);

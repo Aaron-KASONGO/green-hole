@@ -1,12 +1,16 @@
 import React from 'react'
-import { View } from 'react-native'
-import { Avatar, Button, IconButton, Text } from 'react-native-paper'
-import { FontAwesome } from "@expo/vector-icons";
+import { ImageBackground, ScrollView, View } from 'react-native'
+import { Avatar, Badge, Button, Card, IconButton, Text } from 'react-native-paper'
+import { Entypo } from "@expo/vector-icons";
 import { MyButton } from '../generic/MyButton';
+import { borderRadius } from '../../ThemValues';
 
 export const ProfileAbonne = () => {
+  
+
+    
   return (
-    <View>
+    <ScrollView>
       <View
         style={{
           display: 'flex',
@@ -28,31 +32,46 @@ export const ProfileAbonne = () => {
           <Text variant='headlineSmall'>Excellence KAWEJ</Text>
           <Text variant='titleMedium'>excellence.kawej@gmail.com</Text>
           <Text variant='titleMedium'>+243 995 642 184</Text>
-          <MyButton text="S'abonner" mode='contained' />
+          <MyButton text="Désabonner" mode='contained' />
         </View>
       </View>
       <View
         style={{
-          display: 'flex',
-          flexDirection: 'row',
-          justifyContent: 'space-around',
-          width: '100%'
+          width: '100%',
         }}
       >
-        <View style={{ alignItems: 'center'}}>
-          <Text>Abonnées</Text>
-          <Text>127</Text>
-        </View>
-        <View style={{ alignItems: 'center'}}>
-          <Text>Collectes</Text>
-          <Text>84</Text>
-        </View>
-        <View style={{ alignItems: 'center'}}>
-          <Text>Note</Text>
-          <Text><FontAwesome name='star' size={18} />4.5</Text>
+        <View
+            style={{
+                justifyContent: 'center',
+                borderTopWidth: 1,
+                borderBottomWidth: 1,
+                paddingVertical: 10,
+                marginHorizontal: 20
+            }}
+        >
+            <Card>
+              <Card.Title style={{paddingEnd: 10}} left={() => <Entypo name='location' size={25
+              } />} right={() => (<Badge style={{backgroundColor: 'green', paddingHorizontal: 5}}>Disponible</Badge>)} title={<Text variant='headlineSmall'>Position</Text>} />
+              <Card.Cover
+                style={{
+                  borderTopStartRadius: 0,
+                  borderTopEndRadius: 0,
+                  borderBottomStartRadius: borderRadius,
+                  borderBottomEndRadius: borderRadius,
+                  height: 100
+                }}
+                source={{ uri: 'https://as1.ftcdn.net/v2/jpg/01/77/23/02/1000_F_177230281_B4cU4m4epzAiYdaymuHD47AGXGLBSEeT.jpg'}}
+              />
+              <Card.Content
+                style={{position: 'absolute', bottom: 0}}
+                >
+              <Text variant='titleSmall'>Avenue Kampemba N°170</Text>
+
+              </Card.Content>
+            </Card>
         </View>
       </View>
-      <View style={{ marginHorizontal: 20, marginVertical: 15 }}>
+      <View style={{ marginHorizontal: 20, marginVertical: 15, marginBottom: 100 }}>
         <Text variant='titleMedium'>Description</Text>
         <View>
           <Text>
@@ -69,9 +88,8 @@ Pas de commentaire pour le moment ! Ajoutez-en un pour lancer la conversation.
           justifyContent: 'center'
         }}
       >
-        <MyButton icon='alarm' text="Planifier" mode='contained' />
-        <MyButton icon='message-text' text="Notifier" mode='contained' />
+
       </View>
-    </View>
+    </ScrollView>
   )
 }

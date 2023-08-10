@@ -4,7 +4,7 @@ import { borderRadius } from '../../ThemValues'
 import { AntDesign, FontAwesome } from "@expo/vector-icons";
 import { Image, View } from 'react-native';
 
-export const CardAbonnement = ({title, url, navigation}) => {
+export const CardAbonnement = ({item, navigation}) => {
   return (
     <>
         <Card
@@ -13,17 +13,18 @@ export const CardAbonnement = ({title, url, navigation}) => {
                 borderRadius: borderRadius,
                 marginHorizontal: 5
             }}
+            onPress={() => navigation.navigate('detailAbonnement',{profile: item.Collecteur})}
         >
             <Card.Content style={{ paddingVertical: 4, paddingStart: 4, display: 'flex', flexDirection: 'row'}}>
             <View>
-                <Image style={{ width: 100, height: 140, borderRadius: borderRadius }} source={{ uri: url}} alt='iMAGE' />
+                <Image style={{ width: 100, height: 140, borderRadius: borderRadius }} source={{ url: item.Collecteur.image ? item.Collecteur.image : 'https://as2.ftcdn.net/v2/jpg/00/64/67/63/1000_F_64676383_LdbmhiNM6Ypzb3FM4PPuFP9rHe7ri8Ju.jpg'}} alt='iMAGE' />
             </View>
             <View style={{ flex: 1,paddingVertical: 5, paddingHorizontal: 10  , display: 'flex', justifyContent: 'space-between' }}>
 
                 <View style={{ display: 'flex', flexDirection: 'row', justifyContent: 'space-between' }}>
                 <View>
                     <View>
-                    <Text variant='titleMedium' style={{ fontWeight: 'bold' }}>{title}</Text>
+                    <Text variant='titleMedium' style={{ fontWeight: 'bold' }}>{item.Collecteur.prenom + " " + item.Collecteur.nom}</Text>
                     </View>
                     <View>
                     <Text variant='bodySmall'>Mar. 19, Feb</Text>
@@ -37,15 +38,15 @@ export const CardAbonnement = ({title, url, navigation}) => {
                 <View style={{ display: 'flex', flexDirection: 'row', justifyContent: 'space-between' }}>
                 <View style={{ display: 'flex', alignItems: 'center' }}>
                     <Text variant='labelMedium'>Note</Text>
-                    <Text><AntDesign name='star' size={16} />4.5</Text>
+                    <Text><AntDesign name='star' size={16} />{item.note}</Text>
                 </View>
                 <View style={{ display: 'flex', alignItems: 'center' }}>
                     <Text variant='labelMedium'>Travaux</Text>
-                    <Text>12</Text>
+                    <Text>{item.Demande.length}</Text>
                 </View>
                 <View style={{ display: 'flex', alignItems: 'center' }}>
                     <Text variant='labelMedium'>Abonnées</Text>
-                    <Text>+12</Text>
+                    <Text>{item.Collecteur.Souscription.length}</Text>
                 </View>
                 </View>
             </View>

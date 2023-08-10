@@ -2,7 +2,8 @@ import React from 'react'
 import { FlatList, View } from 'react-native'
 import { CardAbonnement } from './CardAbonnement';
 
-export const AbonnementScreen = () => {
+export const AbonnementScreen = ({navigation, route}) => {
+  console.log(route.params.collecteurs)
   return (
     <>
       <FlatList
@@ -10,8 +11,8 @@ export const AbonnementScreen = () => {
             padding: 10
           }}
           scrollEnabled={true}
-          data={DATA}
-          renderItem={({item}) => <CardAbonnement title={item.title} url={item.date} />}
+          data={route.params.collecteurs}
+          renderItem={({item}) => <CardAbonnement item={item} navigation={navigation} />}
           keyExtractor={item => item.id}
         />
     </>
@@ -28,7 +29,7 @@ const DATA = [
   {
     id: '2',
     title: 'Mpeti Nathan',
-    date: 'https://images.pexels.com/photos/1040881/pexels-photo-1040881.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1',
+    date: '',
     temps: 'Encore 1j'
   },
   {
@@ -40,7 +41,7 @@ const DATA = [
   {
     id: '4',
     title: 'Josh Muleshi',
-    date: 'https://images.pexels.com/photos/697509/pexels-photo-697509.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1',
+    date: '',
     temps: 'Encore 1j'
   },
   {

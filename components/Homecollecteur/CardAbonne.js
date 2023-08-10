@@ -4,7 +4,7 @@ import { Avatar, Card, Text } from 'react-native-paper'
 
 const {width, height} = Dimensions.get("screen");
 
-export const CardAbonne = ({navigation}) => {
+export const CardAbonne = ({navigation, image, prenom, nom}) => {
   return (
     <>
         <Card
@@ -25,10 +25,20 @@ export const CardAbonne = ({navigation}) => {
               marginHorizontal: 4
             }}
           >
-            <Avatar.Image
-              source={{ uri: 'https://images.pexels.com/photos/6954192/pexels-photo-6954192.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1'}}
-              size={75}
-            />
+            {
+              image ? (
+                <Avatar.Image
+                source={{ uri: image}}
+                size={75}
+              />
+              ): (
+                <Avatar.Text
+                label={`${prenom.charAt(0)+nom.charAt(0)}`}
+                size={75}
+              />
+              )
+
+            }
             <View>
               <Text theme={{ colors: { onSurface: '#212121'}}} variant='titleMedium'>Junior Memberi</Text>
             </View>

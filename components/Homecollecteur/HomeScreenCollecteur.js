@@ -8,6 +8,7 @@ import { MenuOption, MenuOptions, MenuTrigger } from 'react-native-popup-menu'
 import Demande from '../../data/Demande'
 import { supabase } from '../../lib/supabase'
 import { Touchable } from 'react-native'
+import Menage from '../../data/Menage'
 
 const {width, height} = Dimensions.get("screen");
 
@@ -25,6 +26,7 @@ export const HomeScreenCollecteur = ({navigation}) => {
 
   const [agenda, setAgenda] = useState([]);
   const [demande, setDemande] = useState([]);
+  const [abonne, setAbonne] = useState([]);
 
   const [avatarImage, setAvatarImage] = useState(null);
 
@@ -62,7 +64,14 @@ export const HomeScreenCollecteur = ({navigation}) => {
       .then(response => Demande.getDemandeNotValid(response.data.user.email).then(result => setDemande(result)))
   }
 
+  const getAbonne = () => {
+    
+    supabase.auth.getUser()
+      .then(response => Menage.getAllMenage(response.data.user.email).then(result => setAbonne(result)))
+  }
+
   useEffect(() => {
+    getAbonne();
     getDemande();
     getMonAgenda();
     updateHeaderLeft();
@@ -160,16 +169,25 @@ export const HomeScreenCollecteur = ({navigation}) => {
           alignItems: 'center'
         }}
       >
-        <Text variant='titleMedium' style={{ fontWeight: 'bold', marginVertical: 5}}>Abonnées(15)</Text>
-        <Button mode='text' onPress={() => navigation.navigate('voirPlus')} style={{ marginVertical: 5}}>Voir plus</Button>
+        <Text variant='titleMedium' style={{ fontWeight: 'bold', marginVertical: 1}}>Abonnées(15)</Text>
+        <Button mode='text' onPress={() => navigation.navigate('voirPlus')} style={{ marginVertical: 1}}>Voir plus</Button>
       </View>
       <View>
       <FlatList
+          style={{
+            marginBottom: 9
+          }}
+          showsHorizontalScrollIndicator={false}
           scrollEnabled={true}
           nestedScrollEnabled={true}
           data={DATA}
-          renderItem={({item}) => <CardAbonne navigation={navigation} />}
+          renderItem={({item}) => <CardAbonne navigation={navigation} image={''} prenom='Junior' nom='Mamberi' />}
           keyExtractor={item => item.id}
+          ListEmptyComponent={
+            <View style={{justifyContent: 'center', alignItems: 'center'}}>
+              <Text variant='titleLarge'>Aucun Abonné</Text>
+            </View>
+          }
           horizontal
         />
       <Portal>
@@ -202,49 +220,5 @@ export const HomeScreenCollecteur = ({navigation}) => {
 }
 
 const DATA = [
-  {
-    id: '1',
-    title: 'Recolte de déchets par Ramazani',
-    date: 'Mard. 09/01'
-  },
-  {
-    id: '2',
-    title: 'Recolte de déchets par Zaramani',
-    date: 'Mard. 06/01'
-  },
-  {
-    id: '3',
-    title: 'Recolte de déchets par Zouk',
-    date: 'Mard. 08/01'
-  },
-  {
-    id: '4',
-    title: 'Recolte de déchets par Zebre',
-    date: 'Mard. 07/01'
-  },
-  {
-    id: '5',
-    title: 'Recolte de déchets par Zouzou',
-    date: 'Mard. 03/01'
-  },
-  {
-    id: '6',
-    title: 'Recolte de déchets par Zouzou',
-    date: 'Mard. 03/01'
-  },
-  {
-    id: '7',
-    title: 'Recolte de déchets par Zouzou',
-    date: 'Mard. 03/01'
-  },
-  {
-    id: '8',
-    title: 'Recolte de déchets par Zouzou',
-    date: 'Mard. 03/01'
-  },
-  {
-    id: '9',
-    title: 'Recolte de déchets par Zouzou',
-    date: 'Mard. 03/01'
-  }
+  {id: 1}
 ]

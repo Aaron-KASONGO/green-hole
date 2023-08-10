@@ -41,7 +41,11 @@ const Stack = createNativeStackNavigator();
 const HomeStack = () => {
   return (
     <>
-      <Stack.Navigator>
+      <Stack.Navigator
+        screenOptions={{
+          animation: 'slide_from_right'
+        }}
+      >
         <Stack.Screen
           name='homeScreen'
           component={HomeScreen}
@@ -54,7 +58,8 @@ const HomeStack = () => {
           component={ProfileScreen}
           options={{
             title: 'Profile',
-            headerShadowVisible: false
+            headerShadowVisible: false,
+            animation: 'slide_from_left'
           }}
         />
         <Stack.Screen
@@ -76,7 +81,8 @@ const HomeStack = () => {
           name='waitinglist'
           component={WaitingScreen}
           options={{
-            title: 'En cours'
+            title: 'En cours',
+            animation: 'slide_from_left'
           }}
         />
         
@@ -89,7 +95,7 @@ const HomeStack = () => {
         />
         <Stack.Screen
           name='detailAbonnement'
-          component={ProfileScreen}
+          component={ProfileCollecteur}
           options={{
             title: 'Detail Abonnement'
           }}
@@ -262,7 +268,7 @@ export default function App() {
           >
 
             {
-              false ?
+              true ?
               <>
                 <Tab.Screen
                   name="Acceuil"
