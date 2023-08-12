@@ -1,24 +1,27 @@
 import React, { useEffect, useState } from 'react'
-import { ScrollView, View } from 'react-native'
-import { Avatar, Button, IconButton, Text } from 'react-native-paper'
+import { Modal, ScrollView, View } from 'react-native'
+import { Avatar, Button, Card, IconButton, Text } from 'react-native-paper'
 import { FontAwesome } from "@expo/vector-icons";
 import { MyButton } from '../generic/MyButton';
 import { supabase } from '../../lib/supabase';
 import Demande from '../../data/Demande';
 import Collecteur from '../../data/Collecteur';
+import DemandeMenage from '../../data/dataMenage/Demande';
 
 export const ProfileCollecteur = ({navigation, route}) => {
-  console.log(route.params.profile)
   const [collecteur, setCollecteur] = useState({});
   const [abonnement, setAbonnement] = useState([]);
   const [collecte, setCollecte] = useState([]);
-  const [note, setNote] = useState(0);
+  const [note, setNote] = useState(route.params.profile.note);
   const [image, setImage] = useState(null);
+
+  const [modalVisibility, setModalVisibility] = useState(false);
+  const [desabonne, setDesabonne] = useState(false);
 
   const getCollecteur = () => {
   
       supabase.auth.getUser()
-        .then(response => Collecteur.getCollecteurProfile(route.params.profile.email).then(result => setCollecteur(result[0])))
+        .then(response => Collecteur.getCollecteurProfile(route.params.profile.Collecteur.email).then(result => setCollecteur(result[0])))
   }
 
   const getAbonnement = () => {
@@ -32,7 +35,12 @@ export const ProfileCollecteur = ({navigation, route}) => {
 
   const getCollecte = () => {
       supabase.auth.getUser()
-        .then(response => Demande.getDemandeValidFix(route.params.profile.email).then(result => setCollecte(result)))
+        .then(response => Demande.getDemandeValidFix(route.params.profile.Collecteur.email).then(result => setCollecte(result)))
+  }
+
+  const updateNote = () => {
+    DemandeMenage.updateNote(route.params.profile.id, note)
+    setModalVisibility(false)
   }
 
   useEffect(() => {
@@ -60,7 +68,7 @@ export const ProfileCollecteur = ({navigation, route}) => {
           ): (
             <Avatar.Text
               size={130}
-              label={`${route.params.profile.nom ? route.params.profile.prenom.charAt(0) + route.params.profile.nom.charAt(0): ""}`}
+              label={`${route.params.profile.Collecteur.nom ? route.params.profile.Collecteur.prenom.charAt(0) + route.params.profile.Collecteur.nom.charAt(0): ""}`}
             />
           )
         }
@@ -70,10 +78,10 @@ export const ProfileCollecteur = ({navigation, route}) => {
             alignItems: 'center'
           }}
         >
-          <Text variant='headlineSmall'>{route.params.profile.prenom + " " + route.params.profile.nom}</Text>
-          <Text variant='titleMedium'>{route.params.profile.email}</Text>
+          <Text variant='headlineSmall'>{route.params.profile.Collecteur.prenom + " " + route.params.profile.Collecteur.nom}</Text>
+          <Text variant='titleMedium'>{route.params.profile.Collecteur.email}</Text>
           <Text variant='titleMedium'>+243 995 642 184</Text>
-          <MyButton text="Se désabonner" mode='contained' />
+          <MyButton text="Se désabonner" mode='contained' onPress={() => setDesabonne(true)} />
         </View>
       </View>
       <View
@@ -93,7 +101,7 @@ export const ProfileCollecteur = ({navigation, route}) => {
         >
             <View style={{ alignItems: 'center'}}>
             <Text>Abonnées</Text>
-            <Text>{abonnement.length}</Text>
+            <Text>{route.params.profile.Collecteur.Souscription.length}</Text>
             </View>
             <View style={{ alignItems: 'center'}}>
             <Text>Collectes</Text>
@@ -101,7 +109,7 @@ export const ProfileCollecteur = ({navigation, route}) => {
             </View>
             <View style={{ alignItems: 'center'}}>
             <Text>Note</Text>
-            <Text><FontAwesome name='star' size={18} />{parseFloat(note).toPrecision(2)}</Text>
+            <Text><FontAwesome name='star' size={18} />{parseFloat(route.params.profile.note).toPrecision(2)}</Text>
             </View>
         </View>
       </View>
@@ -109,7 +117,7 @@ export const ProfileCollecteur = ({navigation, route}) => {
         <Text variant='titleMedium'>Description</Text>
         <View>
           <Text>
-          {route.params.profile.description}
+          {route.params.profile.Collecteur.description}
           </Text>
         </View>
       </View>
@@ -120,9 +128,120 @@ export const ProfileCollecteur = ({navigation, route}) => {
           marginBottom: 100
         }}
       >
-        <MyButton icon='alarm' text="Planifier" mode='contained' />
-        <MyButton icon='message-text' text="Notifier" mode='contained' />
+        <MyButton icon='alarm' text="Planifier" mode='outlined' onPress={() => navigation.navigate('notifier', {idSouscription: route.params.profile.id})} />
+        <MyButton icon='message-text' text="Notifier" mode='outlined' onPress={() => navigation.navigate('notifier', {idSouscription: route.params.profile.id})} />
+        <MyButton icon='star' text="Noter" mode='outlined' onPress={() => setModalVisibility(true)} />
       </View>
+      <Modal
+            animationType='fade'
+            visible={modalVisibility}
+            onDismiss={() => setModalVisibility(false)}
+            transparent={true}
+            >
+            <View
+                style={{ 
+                    backgroundColor: 'black',
+                    height: '100%',
+                    opacity: 0.4
+                 }}
+            >
+            </View>
+            <View
+                style={{
+                    flex: 1,
+                    justifyContent: 'center',
+                    alignItems: 'center',
+                    width: '100%',
+                    height: '100%',
+                    position: 'absolute'
+                }}
+            >
+                <Card
+                    style={{
+                        display: 'flex',
+                        alignSelf: 'center'
+                    }}
+                >
+                    <Card.Title
+                        title={<Text variant='headlineSmall'>Noter</Text>}
+                        left={() => <Avatar.Icon icon='exclamation' size={30} />}
+                    />
+                    <Card.Content>
+                      <View style={{justifyContent: 'center', alignItems: 'center', flexDirection: 'row'}}>
+                        <Button
+                          onPress={() => {
+                            if (note < 5) {
+                              setNote(note + 0.5)
+                            }
+                            }}
+                        ><Text variant='headlineSmall'>+</Text></Button>
+                        <Text variant='titleLarge'>{parseFloat(note).toPrecision(2)}</Text>
+                        <Button
+                          onPress={() => {
+                            if (note > 1) {
+                              setNote(note - 0.5)
+                            }
+                          }}
+                        ><Text variant='headlineSmall'>-</Text></Button>
+                      </View>
+                    </Card.Content>
+                    <Card.Actions>
+                        <MyButton mode='text' text="Annuler" onPress={() => setModalVisibility(false)} />
+                        <MyButton mode='text' text="Confirmer" onPress={updateNote} />
+                    </Card.Actions>
+                </Card>
+            </View>
+        </Modal>
+
+        <Modal
+            animationType='fade'
+            visible={desabonne}
+            onDismiss={() => setDesabonne(false)}
+            transparent={true}
+            >
+            <View
+                style={{ 
+                    backgroundColor: 'black',
+                    height: '100%',
+                    opacity: 0.4
+                 }}
+            >
+            </View>
+            <View
+                style={{
+                    flex: 1,
+                    justifyContent: 'center',
+                    alignItems: 'center',
+                    width: '100%',
+                    height: '100%',
+                    position: 'absolute'
+                }}
+            >
+                <Card
+                    style={{
+                        display: 'flex',
+                        alignSelf: 'center',
+                        width: '90%'
+                    }}
+                >
+                    <Card.Title
+                        title={<Text variant='headlineSmall'>Désabonner</Text>}
+                        left={() => <Avatar.Icon icon='exclamation' size={30} />}
+                    />
+                    <Card.Content>
+                      <View style={{justifyContent: 'center', alignItems: 'center', flexDirection: 'row'}}>
+                        
+                        <Text variant='titleMedium'>Voulez-vous vous désabonner de ce Collecteur ?</Text>
+                        
+                      </View>
+                    </Card.Content>
+                    <Card.Actions>
+                        <MyButton mode='text' text="Annuler" onPress={() => setDesabonne(false)} />
+                        <MyButton mode='text' text="Confirmer" />
+                    </Card.Actions>
+                </Card>
+            </View>
+        </Modal>
     </ScrollView>
   )
 }

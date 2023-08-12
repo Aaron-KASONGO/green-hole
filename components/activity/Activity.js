@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { Dimensions, FlatList, ImageBackground } from 'react-native'
 import { View } from 'react-native'
 import { ScrollView } from 'react-native'
@@ -7,10 +7,14 @@ import { borderRadius } from '../../ThemValues'
 
 import { FontAwesome5 } from "@expo/vector-icons";
 import { CardCollecter } from './CardCollecter'
+import DemandeMenage from '../../data/dataMenage/Demande'
+import CollecteurMenage from '../../data/dataMenage/Collecteur'
+import { CardEntreprise } from './CardEntreprise'
+import { supabase } from '../../lib/supabase'
 
 const {width, height} = Dimensions.get("screen");
 
-const CardCarousel = () => {
+const CardCarousel = ({item}) => {
     return (
        <View
         style={{
@@ -28,9 +32,8 @@ const CardCarousel = () => {
               position: 'absolute',
               borderRadius: borderRadius
             }}
-            source={{ uri: 'https://images.pexels.com/photos/1766838/pexels-photo-1766838.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1'}}
+            source={{ uri: item.date}}
           />
-          <Text variant='titleMedium'>Je vais taper quelqu'un</Text>
         </Card>
        </View>
     )
@@ -38,6 +41,22 @@ const CardCarousel = () => {
 
 export const Activity = ({navigation}) => {
   const [search, setSearch] = useState(null);
+  const [collecteurs, setCollecteurs] = useState([]);
+
+  
+  const getAllCollecteur = () => {
+    supabase.auth.getUser()
+          .then(response => {
+            CollecteurMenage.getAllCollecteurs(response.data.user.email)
+              .then((response) => setCollecteurs(response))
+          })
+    
+  }
+
+  useEffect(() => {
+    getAllCollecteur();
+  }, []);
+
   return (
     <ScrollView>
       <View
@@ -66,35 +85,57 @@ export const Activity = ({navigation}) => {
         <FlatList
             scrollEnabled={true}
             data={DATA}
-            renderItem={({item}) => <CardCarousel />}
+            renderItem={({item}) => <CardCarousel item={item} />}
             keyExtractor={item => item.id}
             horizontal
+            pagingEnabled
           />
       </View>
           
-      <Text variant='titleMedium' style={{ fontWeight: 'bold', marginVertical: 5, paddingHorizontal: 10}}>Collecteurs</Text>
+      <View
+        style={{
+          flexDirection: 'row',
+          justifyContent: 'space-between',
+          alignItems: 'center',
+          marginTop: 5
+        }}
+      >
+        <Text variant='titleMedium' style={{ fontWeight: 'bold', marginVertical: 5, paddingHorizontal: 10}}>Collecteurs</Text>
+        <Button mode='text' style={{ marginVertical: 1}} onPress={() => navigation.navigate('voirCollecteurs')}>Voir plus</Button>
+      </View>
+      
       <FlatList
         style={{
           paddingHorizontal: 10,
-          paddingVertical: 10
+          paddingBottom: 10,
         }}
         scrollEnabled={true}
-        data={DATA}
-        renderItem={({item}) => <CardCollecter navigation={navigation} />}
+        data={collecteurs}
+        renderItem={({item}) => <CardCollecter item={item} navigation={navigation} />}
         keyExtractor={item => item.id}
         horizontal
         showsHorizontalScrollIndicator={false}
       />
 
-      <Text variant='titleMedium' style={{ fontWeight: 'bold', marginVertical: 5, paddingHorizontal: 10}}>Entreprises de Transformation</Text>
+      <View
+        style={{
+          flexDirection: 'row',
+          justifyContent: 'space-between',
+          alignItems: 'center'
+        }}
+      >
+        <Text variant='titleMedium' style={{ fontWeight: 'bold', marginVertical: 5, paddingHorizontal: 10}}>Entreprises de Transformation</Text>
+        <Button mode='text' style={{ marginVertical: 1}} onPress={() => navigation.navigate('voirEntreprise')}>Voir plus</Button>
+      </View>
+      
       <FlatList
         style={{
           paddingHorizontal: 10,
-          paddingVertical: 10
+          paddingBottom: 10
         }}
         scrollEnabled={true}
-        data={DATA}
-        renderItem={({item}) => <CardCollecter navigation={navigation} />}
+        data={DAT}
+        renderItem={({item}) => <CardEntreprise navigation={navigation} />}
         keyExtractor={item => item.id}
         horizontal
         showsHorizontalScrollIndicator={false}
@@ -103,25 +144,45 @@ export const Activity = ({navigation}) => {
   )
 }
 
-const DATA = [
+const DAT = [
   {
     id: '1',
-    title: 'Recolte de déchets par Ramazani',
-    date: 'Mard. 09/01'
-  },
-  {
-    id: '2',
-    title: 'Recolte de déchets par Zaramani',
-    date: 'Mard. 06/01'
+    title: 'Clean Plast',
+    date: 'https://www.cleanplastdrc.com/front/images/cleanplast-logo.png',
+    temps: 'Encore 1j'
   },
   {
     id: '3',
-    title: 'Recolte de déchets par Zouk',
-    date: 'Mard. 08/01'
+    title: 'Innov mag',
+    date: 'https://innov-mag.com/wp-content/uploads/2020/12/iconup.png',
+    temps: 'Encore 1j'
+  },
+  
+]
+
+const DATA = [
+  {
+    id: '1',
+    title: 'Excellence',
+    date: 'https://media.sudouest.fr/1713819/1000x500/so-5f7e6da466a4bd5037d0c6dd-ph0.jpg?v=1602121831',
+    temps: 'Encore 1j'
+  },
+  {
+    id: '2',
+    title: 'Mpeti Nathan',
+    date: 'https://static.les-enovateurs.com/uploads/2020/07/D%C3%A9chets-sauvages.jpg',
+    temps: 'Encore 1j'
+  },
+  {
+    id: '3',
+    title: 'Mukuna kanan',
+    date: 'https://www.google.com/url?sa=i&url=https%3A%2F%2Fwww.pdfprof.com%2FPDF_Image.php%3Fidt%3D64921%26t%3D18&psig=AOvVaw0MqoFrSlZZqQ7JmqhHMSUE&ust=1691904117616000&source=images&cd=vfe&opi=89978449&ved=0CBEQjRxqFwoTCNiq35Gw1oADFQAAAAAdAAAAABAR',
+    temps: 'Encore 1j'
   },
   {
     id: '4',
-    title: 'Recolte de déchets par Zebre',
-    date: 'Mard. 07/01'
-  }
+    title: 'Josh Muleshi',
+    date: 'https://www.google.com/url?sa=i&url=https%3A%2F%2Fwww.alamyimages.fr%2Fphotos-images%2Fd%25C3%25A9chets-humains.html&psig=AOvVaw0MqoFrSlZZqQ7JmqhHMSUE&ust=1691904117616000&source=images&cd=vfe&opi=89978449&ved=0CBEQjRxqFwoTCNiq35Gw1oADFQAAAAAdAAAAABAZ',
+    temps: 'Encore 1j'
+  },
 ]

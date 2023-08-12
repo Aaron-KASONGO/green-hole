@@ -30,7 +30,7 @@ export default class DemandeMenage{
         
         let { data, error } = await supabase
             .from('Demande')
-            .select('titre, description, date_planification, Souscription(id, created_at, Menage(id, created_at, email)), Validation(id)')
+            .select('titre, description, date_planification, Souscription!inner(id, created_at, Menage(id, email), Collecteur(id, created_at, email, nom_mark)), Validation(id)')
             .eq('Souscription.Menage.email', email)
             .is('Validation.id', null)
             .gte('date_planification', new Date().toUTCString())
@@ -45,6 +45,63 @@ export default class DemandeMenage{
             return data;
         }
 
+    }
+
+    static async addingDemande(id, date) {
+        
+        
+        const { data, error } = await supabase
+            .from('Demande')
+            .insert([
+            { titre: 'Besoin de collecte de déchets', date_planification: date, souscription: id },
+            ])
+            .select()
+
+        
+        if (error) {
+            Alert.alert(error.message);
+        }
+        
+        if (data.length !== 0) {
+            return data;
+        } else {
+            return data;
+        }
+    }
+
+    static async updateNote(id, note) {
+        
+        const { data, error } = await supabase
+            .from('Souscription')
+            .update({ note: note })
+            .eq('id', id)
+            .select()
+
+        
+        if (error) {
+            Alert.alert(error.message);
+        }
+        
+        if (data.length !== 0) {
+            return data;
+        } else {
+            return data;
+        }
+    }
+
+    static async removeSouscription(id) {
+        
+        
+        const { error } = await supabase
+            .from('Souscription')
+            .delete()
+            .eq('id', id)
+
+
+        
+        if (error) {
+            Alert.alert(error.message);
+        }
     }
 
 }

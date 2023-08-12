@@ -1,27 +1,22 @@
 import React, { useState } from 'react'
 import { FlatList, View } from 'react-native';
-import { Searchbar, Text } from 'react-native-paper'
-import { CardCollecter } from '../activity/CardCollecter';
+import { CardCollecter } from './CardCollecter';
 
-export const SearchScreen = () => {
+export const EntrepriseScreen = ({navigation}) => {
     const [search, setSearch] = useState(null);
   return (
-    <View>
-        <Searchbar
-            style={{
-                borderRadius: 0
-            }}
-            placeholder="Search"
-            onChangeText={setSearch}
-            value={search}
-            />
+    <View
+        style={{
+            marginVertical: 10
+        }}
+    >
         <FlatList
             style={{
                 padding: 10
             }}
             scrollEnabled={true}
             data={DATA}
-            renderItem={({item}) => <CardCollecter title={item.title} url={item.date} />}
+            renderItem={({item}) => <CardCollecter title={item.title} url={item.date} navigation={navigation} />}
             keyExtractor={(item, index) => index}
             numColumns={2}
             />

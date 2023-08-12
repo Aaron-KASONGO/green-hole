@@ -5,19 +5,25 @@ import { AntDesign, FontAwesome } from "@expo/vector-icons";
 import { Image, View } from 'react-native';
 
 export const CardAbonnement = ({item, navigation}) => {
+    /*const data = item.filter((i) => (
+        console.log(i)
+    ))*/
+
+    const date = new Date(item.created_at).toLocaleDateString("fr-fr", { weekday: 'short',  month: 'short', day: 'numeric' });
+    console.log(item)
   return (
     <>
         <Card
             style={{
-                marginBottom: 3,
+                marginBottom: 10,
                 borderRadius: borderRadius,
-                marginHorizontal: 5
+                marginHorizontal: 5,
             }}
-            onPress={() => navigation.navigate('detailAbonnement',{profile: item.Collecteur})}
+            onPress={() => navigation.navigate('detailAbonnement',{profile: item})}
         >
             <Card.Content style={{ paddingVertical: 4, paddingStart: 4, display: 'flex', flexDirection: 'row'}}>
             <View>
-                <Image style={{ width: 100, height: 140, borderRadius: borderRadius }} source={{ url: item.Collecteur.image ? item.Collecteur.image : 'https://as2.ftcdn.net/v2/jpg/00/64/67/63/1000_F_64676383_LdbmhiNM6Ypzb3FM4PPuFP9rHe7ri8Ju.jpg'}} alt='iMAGE' />
+                <Image style={{ width: 100, height: 140, borderRadius: borderRadius }} source={{ uri: item.Collecteur.image ? item.Collecteur.image : 'https://as2.ftcdn.net/v2/jpg/00/64/67/63/1000_F_64676383_LdbmhiNM6Ypzb3FM4PPuFP9rHe7ri8Ju.jpg'}} alt='iMAGE' />
             </View>
             <View style={{ flex: 1,paddingVertical: 5, paddingHorizontal: 10  , display: 'flex', justifyContent: 'space-between' }}>
 
@@ -27,7 +33,7 @@ export const CardAbonnement = ({item, navigation}) => {
                     <Text variant='titleMedium' style={{ fontWeight: 'bold' }}>{item.Collecteur.prenom + " " + item.Collecteur.nom}</Text>
                     </View>
                     <View>
-                    <Text variant='bodySmall'>Mar. 19, Feb</Text>
+                    <Text variant='bodySmall'>{date}</Text>
                     </View>
                 </View>
                 <View>

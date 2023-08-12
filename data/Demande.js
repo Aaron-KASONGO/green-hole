@@ -47,7 +47,7 @@ export default class Demande{
         
         let { data, error } = await supabase
             .from('Demande')
-            .select('titre, description, date_planification, Souscription(id, created_at, Collecteur(id, email)), Validation(id)')
+            .select('titre, description, date_planification, Souscription!inner(id, created_at, Collecteur!inner(id, email), Menage(id, email, prenom, nom)), Validation(id)')
             .eq('Souscription.Collecteur.email', email)
             .is('Validation.id', null)
         if (error) {
@@ -66,7 +66,7 @@ export default class Demande{
         
         let { data, error } = await supabase
             .from('Demande')
-            .select('titre, description, date_planification, Souscription(id, created_at, Collecteur(id, email)), Validation(id)')
+            .select('titre, description, date_planification, Souscription!inner(id, created_at, Collecteur(id, email)), Validation!inner(id)')
             .eq('Souscription.Collecteur.email', email)
             .lte('date_planification', new Date().toUTCString() )
         

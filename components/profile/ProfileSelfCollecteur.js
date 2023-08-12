@@ -12,7 +12,6 @@ export const ProfileSelfCollecteur = () => {
     const [collecteur, setCollecteur] = useState({});
     const [abonnement, setAbonnement] = useState([]);
     const [collecte, setCollecte] = useState([]);
-    const [note, setNote] = useState(0);
     const [image, setImage] = useState(null);
 
     const getCollecteur = () => {
@@ -35,16 +34,12 @@ export const ProfileSelfCollecteur = () => {
           .then(response => Demande.getDemandeValidFix(response.data.user.email).then(result => setCollecte(result)))
     }
 
-    const getNote = () => {
-        supabase.auth.getUser()
-          .then(response => Note.getNote(response.data.user.email).then(result => setNote(result.length !== 0 ? response[0].note : 0.0)))
-    }
+
     
     useEffect(() => {
         getCollecteur();
         getAbonnement();
         getCollecte();
-        getNote();
     }, []);
   return (
     <ScrollView>
@@ -78,7 +73,7 @@ export const ProfileSelfCollecteur = () => {
           <Text variant='headlineSmall'>{collecteur.prenom + " " + collecteur.nom}</Text>
           <Text variant='titleMedium'>{collecteur.email}</Text>
           <Text variant='titleMedium'>{collecteur.adresse}</Text>
-          <MyButton text="Modifier le profile" mode='contained' />
+          <MyButton text="Se déconnecter" onPress={() => supabase.auth.signOut()} mode='contained' />
         </View>
       </View>
       <View
@@ -106,7 +101,7 @@ export const ProfileSelfCollecteur = () => {
             </View>
             <View style={{ alignItems: 'center'}}>
             <Text>Note</Text>
-            <Text><FontAwesome name='star' size={18} />{parseFloat(note).toPrecision(2)}</Text>
+            <Text><FontAwesome name='star' size={18} />{2.3}</Text>
             </View>
         </View>
       </View>
@@ -114,10 +109,7 @@ export const ProfileSelfCollecteur = () => {
         <Text variant='titleMedium'>Description</Text>
         <View>
           <Text>
-          De quoi souhaitez-vous vous rappeler concernant cette Épingle ?
-Ajouter une note
-Commentaires
-Pas de commentaire pour le moment ! Ajoutez-en un pour lancer la conversation.
+            {collecteur.description}
           </Text>
         </View>
       </View>

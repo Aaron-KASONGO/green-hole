@@ -7,23 +7,16 @@ import { MyButton } from '../generic/MyButton';
 import { CardWaiting } from './CardWaiting';
 import { supabase } from '../../lib/supabase';
 import DemandeMenage from '../../data/dataMenage/Demande';
+import { CardDemande } from './CardDemande';
 
-export const WaitingScreen = () => {
+export const DemandeList = ({navigation, route}) => {
     const [modalVisibility, setModalVisibility] = useState(false);
     const [enCours, setEnCours] = useState([]);
 
-    console.log(enCours)
 
     const containerStyle = {backgroundColor: 'white', padding: 20};
 
-    const getEnCours = () => {
-    
-        supabase.auth.getUser()
-          .then(response => DemandeMenage.getDemandeEnCours(response.data.user.email).then(result => setEnCours(result)))
-    }
-
     useEffect(() => {
-        getEnCours();
     }, []);
 
   return (
@@ -34,8 +27,8 @@ export const WaitingScreen = () => {
     >
         <FlatList
           scrollEnabled={true}
-          data={enCours}
-          renderItem={({item}) => <CardWaiting item={item} setModalVisibility={setModalVisibility} />}
+          data={route.params.demande}
+          renderItem={({item}) => <CardDemande item={item} setModalVisibility={setModalVisibility} />}
           keyExtractor={item => item.id}
         />
       

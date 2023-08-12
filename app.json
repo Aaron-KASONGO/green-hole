@@ -21,10 +21,28 @@
       "adaptiveIcon": {
         "foregroundImage": "./assets/adaptive-icon.png",
         "backgroundColor": "#ffffff"
-      }
+      },
+      "permissions": [
+        "android.permission.CAMERA",
+        "android.permission.RECORD_AUDIO"
+      ],
+      "package": "com.mousss.greenhole"
     },
     "web": {
       "favicon": "./assets/favicon.png"
+    },
+    "plugins": [
+      [
+        "expo-camera",
+        {
+          "cameraPermission": "$(PRODUCT_NAME) Demande l'accès à votre camera."
+        }
+      ]
+    ],
+    "extra": {
+      "eas": {
+        "projectId": "0ca152ca-616d-4d34-8fd7-9573b45b0298"
+      }
     }
   }
 }

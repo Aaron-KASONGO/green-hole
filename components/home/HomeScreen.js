@@ -7,6 +7,7 @@ import { CardHistoric } from './Card_Historic';
 import DemandeMenage from '../../data/dataMenage/Demande';
 import { supabase } from '../../lib/supabase';
 import CollecteurMenage from '../../data/dataMenage/Collecteur';
+import { useIsFocused } from '@react-navigation/native';
 
 
 export const HomeScreen = ({navigation}) => {
@@ -18,35 +19,15 @@ export const HomeScreen = ({navigation}) => {
   const [enCours, setEnCours] = useState([]);
   const [collecteurs, setCollecteurs] = useState([]);
   const [avatarImage, setAvatarImage] = useState(null);
+  const [user, setUser] = useState(null);
+
+  console.log(user)
+
+  const focus = useIsFocused();
 
   const { open } = state;
 
-  const updateHeaderLeft = () => {
-    navigation.setOptions({
-      headerLeft: () => {
-        return (
-          <>
-            {avatarImage ? (<TouchableWithoutFeedback onPress={() => navigation.navigate('profile')}><Avatar.Image size={40} source={{}} /></TouchableWithoutFeedback>): (<TouchableWithoutFeedback onPress={() => navigation.navigate('profile')}><Avatar.Text label='KG' size={40} color='green' style={{marginEnd: 5, backgroundColor: 'white'}} /></TouchableWithoutFeedback>)}
-          </>
-        )
-      },
-      headerRight: () => {
-        return (
-          <>
-            <IconButton
-              onPress={() => navigation.navigate('notifications')}
-              icon='bell'
-            />
-          </>
-        )
-      }
-    })
-  }
-
-  console.log(collecteurs)
-
   const getEnCours = () => {
-    
     supabase.auth.getUser()
       .then(response => DemandeMenage.getDemandeEnCours(response.data.user.email).then(result => setEnCours(result)))
   }
@@ -61,10 +42,39 @@ export const HomeScreen = ({navigation}) => {
       }))
   }
 
+  const getUserProfile = () => {
+    supabase.auth.getUser()
+      .then(response => CollecteurMenage.getMenage(response.data.user.email).then(result => {
+        if (result) {
+          setUser(result)
+          setAvatarImage(result.image)
+        }
+      }))
+  }
+
+  const updateHeaderLeft = () => {
+    
+  }
+
   useEffect(() => {
-    getCollecteurs();
-    getEnCours();
-    updateHeaderLeft();
+    const id = setInterval(() => {
+      getCollecteurs();
+      getEnCours();
+      getUserProfile();
+
+      navigation.setOptions({
+        headerLeft: () => {
+          return (
+            <>
+              {avatarImage ? (<TouchableWithoutFeedback onPress={() => navigation.navigate('profileUser', {user: user})}><Avatar.Image style={{marginEnd: 5}} size={40} source={{ uri: avatarImage}} /></TouchableWithoutFeedback>): (<TouchableWithoutFeedback onPress={() => navigation.navigate('profileUser', {user: user})}><Avatar.Text label='KG' size={40} color='green' style={{marginEnd: 5, backgroundColor: 'white'}} /></TouchableWithoutFeedback>)}
+            </>
+          )
+        },
+        
+      })
+
+    }, 10000);
+    return () => clearInterval(id)
   }, []);
   
   return (
@@ -73,33 +83,7 @@ export const HomeScreen = ({navigation}) => {
         padding:10
       }}
     >
-      <Text variant='titleMedium' style={{ fontWeight: 'bold', marginVertical: 5}}>Points gagnées</Text>
-      <Card>
-        <Card.Content
-          style={{
-            backgroundColor: '#5F8D4E',
-            borderRadius: borderRadius
-          }}
-        >
-          <View
-            style={{
-              display: 'flex',
-              flexDirection: 'row',
-              justifyContent: 'center',
-              alignItems: 'center'
-            }}
-          >
-            <Image
-              style={{
-                width: 150,
-                height: 170
-              }}
-            source={require('../../assets/winner.png')}
-            />
-            <Text style={{ color: 'white'}} variant='displaySmall'>200 Points</Text>
-          </View>
-        </Card.Content>
-      </Card>
+      
       <Text variant='titleMedium' style={{ fontWeight: 'bold', marginVertical: 5}}>Informations</Text>
       <View
         style={{
@@ -149,7 +133,7 @@ export const HomeScreen = ({navigation}) => {
               flexDirection: 'row'
             }}
           >
-            <AntDesign color='#00796B' name='calendar' size={30} />
+            <AntDesign color='#00796B' name='user' size={30} />
             <Text variant='displayMedium'>{collecteurs.length}</Text>
           </Card.Content>
         </Card>
@@ -162,18 +146,13 @@ export const HomeScreen = ({navigation}) => {
           style={{
             marginBottom: 80
           }}
-          visible
+          visible={focus}
           icon={open ? 'send' : 'plus'}
           actions={[
             {
-              icon: 'account-group',
-              label: 'Abonnés',
-              onPress: () => console.log('Pressed star'),
-            },
-            {
-              icon: 'account-tie-voice',
+              icon: 'camera',
               label: 'broadcast',
-              onPress: () => console.log('Pressed email'),
+              onPress: () => navigation.navigate('camera'),
             },
           ]}
           onStateChange={onStateChange}

@@ -34,6 +34,11 @@ import Menage from './data/Menage';
 import Collecteur from './data/Collecteur';
 import DemandeMenage from './data/dataMenage/Demande';
 import { ProfileSelfCollecteur } from './components/profile/ProfileSelfCollecteur';
+import { NotifierScreen } from './components/notifier/NotifierScreen';
+import { CollecteurScreen } from './components/activity/CollecteurScreen';
+import { ProfileSelfMenage } from './components/profile/ProfileSelfMenage';
+import { CameraScreen } from './components/camera/CameraScreen';
+import { DemandeList } from './components/waiting/DemandeList';
 
 const Tab = createMaterialBottomTabNavigator();
 const Stack = createNativeStackNavigator();
@@ -54,8 +59,25 @@ const HomeStack = () => {
           }}
         />
         <Stack.Screen
+          name='camera'
+          component={CameraScreen}
+          options={{
+            title: 'Camera',
+            headerShown: false
+          }}
+        />
+        <Stack.Screen
           name='profile'
           component={ProfileScreen}
+          options={{
+            title: 'Profile',
+            headerShadowVisible: false,
+            animation: 'slide_from_left'
+          }}
+        />
+        <Stack.Screen
+          name='profileUser'
+          component={ProfileSelfMenage}
           options={{
             title: 'Profile',
             headerShadowVisible: false,
@@ -100,6 +122,13 @@ const HomeStack = () => {
             title: 'Detail Abonnement'
           }}
         />
+        <Stack.Screen
+          name='notifier'
+          component={NotifierScreen}
+          options={{
+            title: 'Créer notification'
+          }}
+        />
       </Stack.Navigator>
     </>
   )
@@ -107,7 +136,11 @@ const HomeStack = () => {
 
 const ActivityStack = () => {
   return (
-    <Stack.Navigator>
+    <Stack.Navigator
+      screenOptions={{
+        animation: 'slide_from_right'
+      }}
+    >
       <Stack.Screen
         name="activity"
         component={Activity}
@@ -117,7 +150,7 @@ const ActivityStack = () => {
       />
       <Stack.Screen
         name="profileCollecteur"
-        component={ProfileCollecteur}
+        component={ProfileScreen}
         options={{
           title: 'Profile collecteur'
         }}
@@ -127,6 +160,20 @@ const ActivityStack = () => {
         component={SearchScreen}
         options={{
           title: 'Recherche collecteurs'
+        }}
+      />
+      <Stack.Screen
+        name="voirCollecteurs"
+        component={CollecteurScreen}
+        options={{
+          title: 'Collecteurs'
+        }}
+      />
+      <Stack.Screen
+        name="voirEntreprise"
+        component={CollecteurScreen}
+        options={{
+          title: 'Entreprises'
         }}
       />
     </Stack.Navigator>
@@ -198,7 +245,7 @@ const HomeCollecteurSack = ()  => {
 
         <Stack.Screen
           name='demandeList'
-          component={WaitingScreen}
+          component={DemandeList}
           options={{
             title: 'Demandes'
           }}
@@ -235,20 +282,15 @@ const HomeCollecteurSack = ()  => {
 export default function App() {
 
   const [session, setSession] = useState(null)
+  const [sessionTrue, setSessionTrue] = useState(false);
   const [collecteur, setCollecteur] = useState('null');
-
-  
-
-  //supabase.auth.signOut()
-    
 
   //Demande.getDemandeValid(session.user.email).then(response => console.log(response))
 
-
   useEffect(() => {
     supabase.auth.getSession().then(({ data: { session } }) => {
-      
       setSession(session)
+      setSessionTrue(true)
     })
 
     supabase.auth.onAuthStateChange((_event, session) => {
@@ -268,7 +310,7 @@ export default function App() {
           >
 
             {
-              true ?
+              session.user.user_metadata.role === 'menage' ?
               <>
                 <Tab.Screen
                   name="Acceuil"
@@ -317,7 +359,7 @@ export default function App() {
             </>
             }
           </Tab.Navigator> :
-          (
+          (sessionTrue ?
             <>
               <Stack.Navigator
                 screenOptions={{
@@ -344,12 +386,32 @@ export default function App() {
                 }}
                 />
               </Stack.Navigator>
-            </>
+            </>: 
+            <Stack.Navigator>
+              <Stack.Screen
+                name='splash'
+                component={SplashScreen}
+                options={{
+                  headerShown: false
+                }}
+              />
+            </Stack.Navigator>
           )
         }
+        <StatusBar style='inverted' />
       </NavigationContainer>
     </PaperProvider>
   );
+}
+
+const SplashScreen = () => {
+  return (
+    <>
+    <View>
+      <Text>En attendant !</Text>
+    </View>
+    </>
+  )
 }
 
 

@@ -11,7 +11,7 @@ export default class Collecteur{
     static async getAllCollecteur() {
         
         let { data, error } = await this.getCollecteur()
-            .select('nom_mark, nom, prenom, latitude, longitude, adresse, description, image, email')
+            .select('nom_mark,description nom, prenom, latitude, longitude, adresse, description, image, email')
         
         if (error) {
             Alert.alert(error.message);

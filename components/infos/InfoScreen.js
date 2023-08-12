@@ -1,10 +1,23 @@
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import { FlatList, Image, View } from 'react-native'
 import { Card, Text } from 'react-native-paper'
 import { borderRadius } from '../../ThemValues'
 import { CardInfos } from './CardInfos'
 
 export const InfoScreen = ({navigation}) => {
+  const [articles, setArticles] = useState([]);
+
+  const url = "https://api.rss2json.com/v1/api.json?rss_url=https://medium.com/feed/@Solacolu"
+  const fetchData = () => {
+    fetch(url).then((response) => {
+      response.json()
+        .then(res => setArticles(res.items))
+    })
+  }
+
+  useEffect(() => {
+    fetchData();
+  }, []);
   return (
     <View
     >
@@ -13,9 +26,9 @@ export const InfoScreen = ({navigation}) => {
                 padding: 10,
             }}
             scrollEnabled={true}
-            data={DATA}
-            renderItem={({item}) => <CardInfos navigation={navigation} title={item.title} url={item.date} />}
-            keyExtractor={item => item.id}
+            data={articles}
+            renderItem={({item}) => <CardInfos navigation={navigation} item={item} />}
+            keyExtractor={item => item.guid}
             />
     </View>
   )

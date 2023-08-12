@@ -25,6 +25,11 @@ export const SinupScreen = ({route, navigation}) => {
     supabase.auth.signUp({
       email: email,
       password: password,
+      options: {
+        data: {
+          role: 'menage'
+        }
+      }
     }).then((result) =>{
       console.log(result)
         if (result.error) {
@@ -58,6 +63,11 @@ export const SinupScreen = ({route, navigation}) => {
     supabase.auth.signUp({
       email: email,
       password: password,
+      options: {
+        data: {
+          role: 'collecteur'
+        }
+      }
     }).then((result) =>{
       console.log(result)
         if (result.error) {

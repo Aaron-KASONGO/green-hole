@@ -21,6 +21,24 @@ export default class Menage{
         } else {
             return data;
         }
+    }
+
+    static async getAbonne(email) {
+        
+        let { data, error } = await supabase
+            .from('Menage')
+            .select('id,nom, prenom, latitude, longitude, adresse, description, image, email, Souscription(id, created_at, Collecteur(id,nom_mark, nom, prenom, adresse, image, email))')
+            .eq('Souscription.Collecteur.email', email)
+        
+        if (error) {
+            Alert.alert(error.message);
+        }
+        
+        if (data.length !== 0) {
+            return data;
+        } else {
+            return data;
+        }
 
     }
 

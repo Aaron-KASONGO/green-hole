@@ -9,12 +9,15 @@ import Demande from '../../data/Demande'
 import { supabase } from '../../lib/supabase'
 import { Touchable } from 'react-native'
 import Menage from '../../data/Menage'
+import { useIsFocused } from '@react-navigation/native'
 
 const {width, height} = Dimensions.get("screen");
 
 
 
 export const HomeScreenCollecteur = ({navigation}) => {
+  const dialUp = useIsFocused();
+
   const [state, setState] = useState({ open: false });
   const [visible, setVisible] = useState(false);
 
@@ -51,6 +54,8 @@ export const HomeScreenCollecteur = ({navigation}) => {
     })
   }
 
+  console.log(demande)
+
 
   const getMonAgenda = () => {
     
@@ -67,14 +72,20 @@ export const HomeScreenCollecteur = ({navigation}) => {
   const getAbonne = () => {
     
     supabase.auth.getUser()
-      .then(response => Menage.getAllMenage(response.data.user.email).then(result => setAbonne(result)))
+      .then(response => Menage.getAbonne(response.data.user.email).then(result => setAbonne(result)))
   }
 
+
   useEffect(() => {
-    getAbonne();
-    getDemande();
-    getMonAgenda();
-    updateHeaderLeft();
+    const id = setTimeout(() => {
+      getAbonne();
+      getDemande();
+      getMonAgenda();
+      updateHeaderLeft();
+
+    }, 15000)
+
+    return () => clearInterval(id)
   }, []);
 
   return (
@@ -143,7 +154,7 @@ export const HomeScreenCollecteur = ({navigation}) => {
             flex: 1,
             marginStart: 5
           }}
-          onPress={() => navigation.navigate('demandeList')}
+          onPress={() => navigation.navigate('demandeList', {demande: demande})}
         >
           <Card.Title
             title={<Text theme={{ colors: { onSurface: '#212121'}}} variant='labelLarge' style={{ fontWeight: 'bold' }}>Demande(s)</Text>}
@@ -180,8 +191,8 @@ export const HomeScreenCollecteur = ({navigation}) => {
           showsHorizontalScrollIndicator={false}
           scrollEnabled={true}
           nestedScrollEnabled={true}
-          data={DATA}
-          renderItem={({item}) => <CardAbonne navigation={navigation} image={''} prenom='Junior' nom='Mamberi' />}
+          data={abonne}
+          renderItem={({item}) => <CardAbonne navigation={navigation} item={item} image={''} prenom='Junior' nom='Mamberi' />}
           keyExtractor={item => item.id}
           ListEmptyComponent={
             <View style={{justifyContent: 'center', alignItems: 'center'}}>
@@ -196,7 +207,7 @@ export const HomeScreenCollecteur = ({navigation}) => {
           style={{
             marginBottom: 80
           }}
-          visible
+          visible={dialUp}
           icon={open ? 'send' : 'plus'}
           actions={[
             {
